@@ -33,6 +33,9 @@
   .num, td.n, th.n { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
   header { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--line); background: var(--surface); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
   body.static .live-only { display: none !important; }
+  a.navlink { display: inline-block; border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; color: var(--ink); background: var(--surface); text-decoration: none; }
+  a.navlink:hover { background: var(--accent-soft); }
+  a.navlink:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   header h1 { font-size: 17px; margin: 0; font-weight: 650; letter-spacing: 0.01em; }
   header .sub { color: var(--muted); font-size: 12.5px; }
   .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
@@ -143,6 +146,7 @@
     </select>
     <button id="openUpload" class="live-only">Load data</button>
     <button id="openModel" class="live-only">Edit model</button>
+    <a class="navlink" href="planning.html">Plan</a>
   </div>
 </header>
 

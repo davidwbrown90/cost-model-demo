@@ -1,0 +1,1469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>IT Plan FY2027</title>
+<style>
+  :root {
+    --ground: #f4f5f2; --surface: #ffffff; --ink: #1b2421; --muted: #5d6a65; --line: #dde2de; --soft: #eef1ee;
+    --accent: #1f6f5c; --accent-soft: #e3efe9; --up: #a8611c; --down: #2e7d4f; --alert: #b3261e; --alert-soft: #fbe9e7; --warn: #8a5a00; --warn-soft: #fbf0d9;
+    --ok-soft: #e4f1e8; --bar: #c9d6d0; --edit: #fffdf2; --edit-line: #d8c777;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #101513; --surface: #19201d; --ink: #e5ebe8; --muted: #9aa8a2; --line: #2b3531; --soft: #202926;
+      --accent: #5fc1a4; --accent-soft: #1d322b; --up: #e0a060; --down: #6fcf97; --alert: #f28b82; --alert-soft: #3a1f1d; --warn: #e6c36a; --warn-soft: #33290f;
+      --ok-soft: #1c3026; --bar: #34413c; --edit: #26241a; --edit-line: #6b6130; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #101513; --surface: #19201d; --ink: #e5ebe8; --muted: #9aa8a2; --line: #2b3531; --soft: #202926;
+    --accent: #5fc1a4; --accent-soft: #1d322b; --up: #e0a060; --down: #6fcf97; --alert: #f28b82; --alert-soft: #3a1f1d; --warn: #e6c36a; --warn-soft: #33290f;
+    --ok-soft: #1c3026; --bar: #34413c; --edit: #26241a; --edit-line: #6b6130; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font: 14px/1.45 "Segoe UI", system-ui, -apple-system, sans-serif; }
+  code, .mono { font-family: Consolas, "Cascadia Mono", monospace; font-size: 12.5px; }
+  .n { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+  header { display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--line); background: var(--surface); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; }
+  header h1 { font-size: 17px; margin: 0; font-weight: 650; }
+  header .sub { color: var(--muted); font-size: 12.5px; }
+  header nav { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  button, select, input { font: inherit; color: var(--ink); }
+  button, select { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+  button.primary { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+  button:disabled { opacity: 0.45; cursor: default; }
+  a.btn { display: inline-block; border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; color: var(--ink); text-decoration: none; background: var(--surface); }
+  input[type="text"], input[type="number"], input[type="search"], select, textarea { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; }
+  button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, [tabindex]:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  main { max-width: 1480px; margin: 0 auto; padding: 18px 24px 70px; display: grid; gap: 16px; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+  .kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; min-width: 0; }
+  .kpi .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .kpi .value { font-size: 22px; font-weight: 650; margin-top: 3px; font-variant-numeric: tabular-nums; }
+  .kpi .note { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .up { color: var(--up); } .down { color: var(--down); }
+  .pill { display: inline-block; font-size: 11.5px; padding: 1px 8px; border-radius: 999px; font-weight: 600; white-space: nowrap; }
+  .pill.ok { background: var(--ok-soft); color: var(--down); }
+  .pill.bad { background: var(--alert-soft); color: var(--alert); }
+  .pill.warn { background: var(--warn-soft); color: var(--warn); }
+  .pill.info { background: var(--accent-soft); color: var(--accent); }
+  .pill.mute { background: var(--soft); color: var(--muted); }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; }
+  .toolbar .grow { flex: 1 1 220px; min-width: 0; }
+  .toolbar input[type="search"] { width: 100%; }
+  .toolbar .sep { color: var(--muted); font-size: 12.5px; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+  .layout.with-detail { grid-template-columns: minmax(0, 1fr) minmax(380px, 440px); }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; min-width: 0; }
+  .gridwrap { overflow: auto; max-height: 72vh; }
+  table.plan { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 980px; }
+  table.plan th { position: sticky; top: 0; z-index: 3; background: var(--surface); text-align: left; font-weight: 600; color: var(--muted); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.05em; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  table.plan th.n { text-align: right; }
+  table.plan td { padding: 5px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  tr.acct td { background: var(--soft); font-weight: 650; }
+  tr.vend td { background: var(--surface); font-weight: 600; }
+  tr.po td { font-weight: 400; }
+  tr.po.sel td { background: var(--accent-soft); }
+  tr.po:hover td { background: var(--accent-soft); }
+  .name { display: flex; align-items: center; gap: 6px; min-width: 0; }
+  .name .txt { min-width: 0; overflow-wrap: anywhere; }
+  .l1 .name { padding-left: 20px; } .l2 .name { padding-left: 42px; }
+  .chev { border: 0; background: none; padding: 2px 4px; width: 22px; color: var(--muted); font-size: 13px; }
+  .chev[aria-expanded="true"] { transform: rotate(90deg); }
+  .poLink { background: none; border: 0; padding: 0; text-align: left; color: var(--ink); cursor: pointer; }
+  .poLink:hover .desc { text-decoration: underline; }
+  .poId { color: var(--muted); }
+  .desc { overflow-wrap: anywhere; }
+  .cell-in { width: 100%; max-width: 132px; text-align: right; font-variant-numeric: tabular-nums; background: var(--edit); border-color: var(--edit-line); }
+  .pct-in { max-width: 62px; }
+  .mini { display: flex; align-items: flex-end; gap: 1px; height: 22px; min-width: 84px; }
+  .mini i { display: block; flex: 1; background: var(--accent); opacity: 0.75; min-height: 1px; border-radius: 1px 1px 0 0; }
+  .gap-ok { color: var(--down); } .gap-bad { color: var(--alert); font-weight: 650; }
+  aside.detail { position: sticky; top: calc(66px + env(safe-area-inset-top, 0px)); max-height: calc(100vh - 86px); overflow: auto; padding: 14px 16px; }
+  aside.detail h2 { margin: 0 0 2px; font-size: 15px; }
+  .facts { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; font-size: 13px; margin: 8px 0; }
+  .facts dt { color: var(--muted); } .facts dd { margin: 0; overflow-wrap: anywhere; }
+  .bar { height: 8px; background: var(--bar); border-radius: 4px; overflow: hidden; margin: 4px 0; }
+  .bar > span { display: block; height: 100%; background: var(--accent); }
+  .bar > span.hot { background: var(--alert); }
+  .field { display: grid; gap: 3px; margin: 10px 0; }
+  .field label, .field .lab { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .seg button { border: 0; border-radius: 0; border-right: 1px solid var(--line); padding: 5px 10px; }
+  .seg button:last-child { border-right: 0; }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--surface); }
+  table.m { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  table.m th, table.m td { padding: 3px 4px; text-align: right; border-bottom: 1px solid var(--line); }
+  table.m th:first-child, table.m td:first-child { text-align: left; color: var(--muted); }
+  table.m input { width: 62px; text-align: right; background: var(--edit); border-color: var(--edit-line); padding: 2px 4px; font-size: 12.5px; }
+  .tag-a { color: var(--muted); font-size: 10.5px; margin-left: 2px; }
+  details.how { padding: 12px 16px; }
+  details.how summary { cursor: pointer; font-weight: 650; }
+  details.how .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px 24px; margin-top: 10px; }
+  details.how h3 { font-size: 13px; margin: 0 0 3px; }
+  details.how p { margin: 0; color: var(--muted); font-size: 13px; }
+  dialog { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); padding: 0; width: min(560px, calc(100vw - 32px)); }
+  dialog::backdrop { background: rgb(0 0 0 / 0.35); }
+  dialog .body { padding: 16px 18px; display: grid; gap: 10px; }
+  dialog .actions { display: flex; justify-content: flex-end; gap: 8px; padding: 10px 18px; border-top: 1px solid var(--line); }
+  dialog h3 { margin: 0; }
+  .logrow { display: grid; grid-template-columns: 88px 100px 1fr; gap: 8px; font-size: 13px; padding: 4px 0; border-bottom: 1px solid var(--line); }
+  .muted { color: var(--muted); }
+  .empty { padding: 30px; text-align: center; color: var(--muted); }
+  @media (max-width: 1100px) { .layout.with-detail { grid-template-columns: minmax(0, 1fr); } aside.detail { position: static; max-height: none; } }
+  @media (max-width: 560px) { header, main { padding-left: 16px; padding-right: 16px; } header { position: static; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>IT Plan <span id="planYear">FY2027</span></h1>
+    <div class="sub" id="subtitle"></div>
+  </div>
+  <nav aria-label="Plan actions">
+    <a class="btn" href="index.html">Cost model</a>
+    <button id="btnUndo" disabled>Undo</button>
+    <button id="btnReset">Reset</button>
+    <button id="btnExport">Export CSV</button>
+    <button id="btnLog">Change log</button>
+  </nav>
+</header>
+
+<main>
+  <div class="kpis" id="kpis"></div>
+
+  <details class="card how">
+    <summary>How this plan works</summary>
+    <div class="cols">
+      <div><h3>Plan at purchase-order level</h3><p>Each PO (or contract, asset or payroll line) has its own FY2027 plan. Vendors and accounts are just the totals of the POs beneath them, so any number can be drilled back to the PO that caused it.</p></div>
+      <div><h3>How a PO's plan is set</h3><p><b>Run-rate</b>: the last three months of actuals, plus an uplift %. <b>Same as last year</b>: each month of FY26 outturn, plus an uplift. <b>Manual</b>: typed in (editing an annual figure or a month does this). <b>Stop</b>: run-rate until a month you choose. <b>New</b>: a PO that does not exist yet.</p></div>
+      <div><h3>Contracts that end</h3><p>If a contract ends before the plan year does, someone has to decide: <b>Renew</b> keeps it going, <b>Lapse</b> stops it at the end date. Until you decide it is assumed to continue, so the plan is not understated, and it is flagged.</p></div>
+      <div><h3>Top-down and bottom-up</h3><p>Each account has a target. The gap column is plan minus target. <b>Allocate target</b> overwrites the account's POs so they add up to the target exactly, sharing it by last year's spend. Undo reverses it.</p></div>
+      <div><h3>FY26 outturn</h3><p>Actuals for January to September plus the forecast for October to December. The FY26 budget is shown for reference. Everything here is fictional.</p></div>
+      <div><h3>Where changes are kept</h3><p>Edits are saved in this browser only (nothing is sent anywhere). Reset returns to the starting plan, and Export CSV downloads the plan at PO level.</p></div>
+    </div>
+  </details>
+
+  <section class="toolbar" aria-label="Filters and bulk actions">
+    <div class="grow"><input type="search" id="q" placeholder="Search vendor, PO number or description" aria-label="Search"></div>
+    <select id="fCc" aria-label="Cost centre"></select>
+    <select id="fStatus" aria-label="Status filter">
+      <option value="all">All POs</option>
+      <option value="decision">Decision needed</option>
+      <option value="expiring">Ending by Dec 2027</option>
+      <option value="edited">Edited by you</option>
+      <option value="new">Planned (no PO yet)</option>
+      <option value="overspent">Over 90% of PO value used</option>
+    </select>
+    <button id="btnExpand">Expand all</button>
+    <button id="btnCollapse">Collapse all</button>
+    <span class="sep">|</span>
+    <label class="sep" for="bulkPct">Uplift</label>
+    <input type="number" id="bulkPct" step="0.5" value="3" style="width:72px" aria-label="Uplift percent">
+    <span class="sep">%</span>
+    <button id="btnBulk" class="primary">Apply to visible POs</button>
+    <button id="btnNew">+ Plan a new PO</button>
+  </section>
+
+  <div class="layout" id="layout">
+    <section class="card gridwrap" aria-label="Plan by account, vendor and PO">
+      <table class="plan" id="grid"></table>
+    </section>
+    <aside class="card detail" id="detail" hidden aria-label="PO detail"></aside>
+  </div>
+
+  <p class="muted" style="margin:0;font-size:12.5px">Illustrative data only. Vendor names are real-world examples used as placeholders; every amount, PO number, invoice, date and owner is invented, and nothing here describes any real contract or company.</p>
+
+  <details class="card how" id="impact">
+    <summary>Where the plan lands: IT towers, applications and business units</summary>
+    <p class="muted" style="margin:8px 0 10px">The plan, line by line, is allocated through the same cost-model rules used for actuals (ledger to IT towers to applications to business units). Change a PO above and this recalculates. FY26 outturn is run through the same rules for comparison.</p>
+    <div class="row" style="margin-bottom:8px">
+      <div class="seg" role="group" aria-label="View">
+        <button data-impact="consumer" aria-pressed="true">Business units</button>
+        <button data-impact="solution" aria-pressed="false">Applications</button>
+        <button data-impact="tower" aria-pressed="false">IT towers</button>
+      </div>
+      <span id="impactNote" class="muted"></span>
+    </div>
+    <div style="overflow:auto"><table class="m" id="impactTable" style="font-size:13px"></table></div>
+  </details>
+</main>
+
+<dialog id="dlgNew">
+  <form method="dialog" id="formNew">
+    <div class="body">
+      <h3>Plan a new PO</h3>
+      <p class="muted" style="margin:0">Spend you expect next year that has no purchase order yet. It joins the plan straight away and can be removed again.</p>
+      <div class="row"><label for="nVendor" class="muted">Vendor</label><input type="text" id="nVendor" required placeholder="e.g. Datadog"></div>
+      <div class="row"><label for="nDesc" class="muted">Description</label><input type="text" id="nDesc" required placeholder="What it buys" style="flex:1"></div>
+      <div class="row"><label for="nAcct" class="muted">Account</label><select id="nAcct"></select><label for="nCc" class="muted">Cost centre</label><select id="nCc"></select></div>
+      <div class="row"><label for="nMonthly" class="muted">Monthly £</label><input type="number" id="nMonthly" min="0" step="100" value="10000" required style="width:110px">
+        <label for="nStart" class="muted">Start</label><select id="nStart"></select><label for="nMonths" class="muted">Months</label><input type="number" id="nMonths" min="1" max="12" value="12" style="width:64px"></div>
+      <div id="nErr" class="muted" role="alert"></div>
+    </div>
+    <div class="actions"><button value="cancel" formnovalidate>Cancel</button><button class="primary" id="nGo" value="default">Add to plan</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlgLog">
+  <div class="body"><h3>Change log</h3><div id="logBody" style="max-height:55vh;overflow:auto"></div></div>
+  <div class="actions"><button id="logClose">Close</button></div>
+</dialog>
+
+<script>'use strict';
+// Planning engine: plan spend at purchase-order (PO) level and roll it up through
+// vendor to account. Modelled on how spend-planning tools (the planning modules of TBM suites and
+// similar) work, from public descriptions: bottom-up plan on the lowest-level
+// commitment, a top-down target per account to reconcile against, plan versus the
+// prior-year outturn (actuals to date + forecast) and budget, and decisions flagged
+// on contracts about to end. Pure functions over plain data so the same file runs in
+// Node (tests, server) and in the browser (bundled into the static planning page).
+//
+// Data shape (see lib/planning-sample.js for a full example):
+//   state = { meta, accounts: [{id,name,group}], costCentres: {id:name},
+//             targets: {accountId: annualTarget}, pos: [PO...] }
+//   PO    = { id, kind: 'PO'|'Asset'|'Payroll'|'New', vendor, account, costCentre, description,
+//             type, billing, owner, status, startDate, endDate, poValue, invoicedToDate,
+//             decision: null|'undecided'|'renew'|'lapse',
+//             fy26: { budget[12], actual[9], forecast[3] }, invoices: [...],
+//             plan: { method, uplift, manual[12]|null, stopAfter, start, months, monthly, note } }
+// Methods:
+//   runrate  last-3-month average of actuals x (1 + uplift), every active month
+//   flat     same month last year (actual then forecast) x (1 + uplift)
+//   manual   typed-in monthly values (also what top-down allocation and annual edits produce)
+//   stop     run-rate until stopAfter (inclusive), then nothing
+//   new      monthly amount for `months` months from `start` (a PO that does not exist yet)
+
+const PLAN_MONTHS = Array.from({ length: 12 }, (_, i) => `2027-${String(i + 1).padStart(2, '0')}`);
+const PLAN_MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const METHODS = ['runrate', 'flat', 'manual', 'stop', 'new'];
+const ACTUAL_MONTHS = 9; // Jan-Sep 2026 are actuals; Oct-Dec 2026 are forecast
+
+const r2 = (n) => Math.round(n * 100) / 100;
+const sum = (a) => a.reduce((x, y) => x + y, 0);
+const clone = (o) => JSON.parse(JSON.stringify(o));
+const monthOf = (dateStr) => String(dateStr || '').slice(0, 7);
+
+// ---- single-PO calculations ------------------------------------------------
+
+function outturn(po) {
+  return [...po.fy26.actual, ...po.fy26.forecast];
+}
+
+function runRate(po) {
+  const last3 = po.fy26.actual.slice(-3);
+  return last3.length ? sum(last3) / last3.length : 0;
+}
+
+// Is the PO still running in plan month i (0-11)? A PO that ends before the month only
+// continues if someone decided to renew it, or nobody has decided yet (assume it
+// continues, but flag it so the decision is not forgotten).
+function isActive(po, i) {
+  if (po.kind === 'New') return true;
+  if (!po.endDate) return true;
+  if (monthOf(po.endDate) >= PLAN_MONTHS[i]) return true;
+  return po.decision !== 'lapse';
+}
+
+function planMonths(po) {
+  const p = po.plan;
+  const out = new Array(12).fill(0);
+  switch (p.method) {
+    case 'manual':
+      for (let i = 0; i < 12; i++) out[i] = Number(p.manual?.[i]) || 0;
+      break;
+    case 'new':
+      for (let i = 0; i < 12; i++) {
+        const k = PLAN_MONTHS[i] >= p.start && i - PLAN_MONTHS.indexOf(p.start) < p.months;
+        out[i] = k && PLAN_MONTHS.indexOf(p.start) >= 0 ? Number(p.monthly) || 0 : 0;
+      }
+      break;
+    case 'flat': {
+      const base = outturn(po);
+      for (let i = 0; i < 12; i++) out[i] = isActive(po, i) ? base[i] * (1 + (p.uplift || 0)) : 0;
+      break;
+    }
+    case 'stop': {
+      const rr = runRate(po);
+      for (let i = 0; i < 12; i++) out[i] = PLAN_MONTHS[i] <= (p.stopAfter || '') && isActive(po, i) ? rr * (1 + (p.uplift || 0)) : 0;
+      break;
+    }
+    case 'runrate':
+    default: {
+      const rr = runRate(po);
+      for (let i = 0; i < 12; i++) out[i] = isActive(po, i) ? rr * (1 + (p.uplift || 0)) : 0;
+    }
+  }
+  return out.map(r2);
+}
+
+// Flags shown beside a PO. `decisionNeeded` = it ends before the plan year does and nobody has said renew or lapse.
+function flags(po) {
+  const endsInPlanYear = po.endDate && monthOf(po.endDate) < PLAN_MONTHS[11] && po.kind !== 'New';
+  const decisionNeeded = !!endsInPlanYear && (po.decision === 'undecided' || po.decision == null) && monthOf(po.endDate) >= '2026-10';
+  return {
+    expiring: !!endsInPlanYear && monthOf(po.endDate) >= '2026-10',
+    decisionNeeded,
+    isNew: po.kind === 'New',
+    edited: po.plan.method === 'manual' || !!po.edited,
+    overCommitted: po.poValue > 0 && po.kind === 'PO' && po.invoicedToDate / po.poValue > 0.9,
+  };
+}
+
+// ---- store -----------------------------------------------------------------
+
+function createPlan(initial) {
+  const original = clone(initial);
+  let state = clone(initial);
+  const history = [];
+  const log = [];
+  let nextNew = 1 + state.pos.filter((p) => p.kind === 'New').length;
+
+  const byId = (id) => {
+    const po = state.pos.find((p) => p.id === id);
+    if (!po) throw new Error(`No PO "${id}"`);
+    return po;
+  };
+  const remember = () => { history.push(JSON.stringify(state)); if (history.length > 60) history.shift(); };
+  const note = (what, detail) => log.unshift({ at: new Date().toISOString(), what, detail });
+
+  function edit(what, detail, fn) {
+    remember();
+    fn();
+    note(what, detail);
+  }
+
+  const api = {
+    get state() { return state; },
+    get log() { return log; },
+    get canUndo() { return history.length > 0; },
+
+    planOf: (po) => planMonths(po),
+    annualPlan: (po) => r2(sum(planMonths(po))),
+    flags,
+
+    setUplift(id, pct) {
+      const po = byId(id);
+      if (!['runrate', 'flat', 'stop'].includes(po.plan.method)) return false;
+      edit('Uplift', `${po.id} ${po.vendor}: ${r2((po.plan.uplift || 0) * 100)}% to ${r2(pct * 100)}%`, () => { po.plan.uplift = pct; po.edited = true; });
+      return true;
+    },
+
+    setMethod(id, method, opts = {}) {
+      if (!METHODS.includes(method)) throw new Error(`Unknown method ${method}`);
+      const po = byId(id);
+      edit('Method', `${po.id} ${po.vendor}: ${po.plan.method} to ${method}`, () => {
+        if (method === 'manual') po.plan.manual = planMonths(po); // start from what the plan currently says
+        po.plan.method = method;
+        Object.assign(po.plan, opts);
+        po.edited = true;
+      });
+    },
+
+    setMonth(id, i, value) {
+      const po = byId(id);
+      const v = Math.max(0, Number(value) || 0);
+      edit('Month', `${po.id} ${po.vendor}: ${PLAN_MONTH_LABELS[i]} ${r2(planMonths(po)[i])} to ${r2(v)}`, () => {
+        const months = planMonths(po);
+        po.plan.method = 'manual';
+        po.plan.manual = months;
+        po.plan.manual[i] = r2(v);
+        po.edited = true;
+      });
+    },
+
+    // Set the whole-year figure. Spread follows last year's shape (or evenly if there was none), and the total is exact to the penny.
+    setAnnual(id, total) {
+      const po = byId(id);
+      const t = Math.max(0, Number(total) || 0);
+      edit('Annual', `${po.id} ${po.vendor}: ${r2(sum(planMonths(po)))} to ${r2(t)}`, () => {
+        po.plan.manual = spread(t, shape(po));
+        po.plan.method = 'manual';
+        po.edited = true;
+      });
+    },
+
+    setDecision(id, decision) {
+      const po = byId(id);
+      edit('Decision', `${po.id} ${po.vendor}: ${po.decision || 'none'} to ${decision}`, () => { po.decision = decision; po.edited = true; });
+    },
+
+    setNote(id, text) {
+      const po = byId(id);
+      po.plan.note = text;
+    },
+
+    applyUplift(ids, pct, label = 'selection') {
+      const targets = ids.map(byId).filter((p) => ['runrate', 'flat', 'stop'].includes(p.plan.method));
+      if (!targets.length) return 0;
+      edit('Bulk uplift', `${targets.length} PO(s) in ${label} set to ${r2(pct * 100)}%`, () => {
+        for (const p of targets) { p.plan.uplift = pct; p.edited = true; }
+      });
+      return targets.length;
+    },
+
+    setTarget(account, value) {
+      edit('Target', `${account}: ${r2(state.targets[account] || 0)} to ${r2(value)}`, () => { state.targets[account] = r2(Number(value) || 0); });
+    },
+
+    // Top-down: make the account's POs add up to `target` exactly, sharing it by last year's outturn.
+    allocateTarget(account, target) {
+      const pos = state.pos.filter((p) => p.account === account);
+      if (!pos.length) return 0;
+      edit('Top-down', `${account}: ${pos.length} PO(s) set to share ${r2(target)}`, () => {
+        const weights = pos.map((p) => Math.max(0, sum(outturn(p))));
+        const totalW = sum(weights);
+        const shares = totalW > 0 ? weights.map((w) => w / totalW) : pos.map(() => 1 / pos.length);
+        let allocated = 0;
+        pos.forEach((p, k) => {
+          const mine = k === pos.length - 1 ? r2(target - allocated) : r2(target * shares[k]);
+          allocated = r2(allocated + mine);
+          p.plan.manual = spread(mine, shape(p));
+          p.plan.method = 'manual';
+          p.edited = true;
+        });
+        state.targets[account] = r2(target);
+      });
+      return pos.length;
+    },
+
+    addNew({ vendor, account, costCentre, description, monthly, start, months, owner }) {
+      const id = `PR-${String(9000 + nextNew++)}`;
+      edit('New PO', `${id} ${vendor}: ${r2(monthly)} x ${months} from ${start}`, () => {
+        state.pos.push({
+          id, kind: 'New', vendor, account, costCentre, description, type: 'Planned purchase', billing: 'monthly', owner: owner || 'Unassigned',
+          status: 'Planned', startDate: `${start}-01`, endDate: null, poValue: r2(monthly * months), invoicedToDate: 0, decision: null,
+          fy26: { budget: new Array(12).fill(0), actual: new Array(ACTUAL_MONTHS).fill(0), forecast: new Array(12 - ACTUAL_MONTHS).fill(0) },
+          invoices: [], plan: { method: 'new', uplift: 0, manual: null, stopAfter: null, start, months, monthly, note: '' }, edited: true,
+        });
+      });
+      return id;
+    },
+
+    remove(id) {
+      const po = byId(id);
+      if (po.kind !== 'New') throw new Error('Only planned (new) POs can be removed');
+      edit('Remove', `${po.id} ${po.vendor}`, () => { state.pos = state.pos.filter((p) => p.id !== id); });
+    },
+
+    undo() {
+      if (!history.length) return false;
+      state = JSON.parse(history.pop());
+      note('Undo', 'Reverted the last change');
+      return true;
+    },
+
+    reset() {
+      remember();
+      state = clone(original);
+      note('Reset', 'Back to the starting plan');
+    },
+
+    load(saved) { state = clone(saved); },
+
+    // ---- roll-up: account -> vendor -> PO
+    rollup(filter = () => true) {
+      const accounts = new Map(state.accounts.map((a) => [a.id, { ...a, vendors: new Map(), ...zero() }]));
+      for (const po of state.pos) {
+        if (!filter(po)) continue;
+        const acct = accounts.get(po.account);
+        const m = planMonths(po);
+        const row = {
+          po, months: m,
+          budget26: r2(sum(po.fy26.budget)),
+          actual26: r2(sum(po.fy26.actual)),
+          forecast26: r2(sum(po.fy26.forecast)),
+          outturn26: r2(sum(outturn(po))),
+          plan27: r2(sum(m)),
+          flags: flags(po),
+        };
+        add(acct, row);
+        if (!acct.vendors.has(po.vendor)) acct.vendors.set(po.vendor, { vendor: po.vendor, pos: [], ...zero() });
+        const v = acct.vendors.get(po.vendor);
+        v.pos.push(row);
+        add(v, row);
+      }
+      const out = [...accounts.values()].filter((a) => a.vendors.size).map((a) => {
+        const vendors = [...a.vendors.values()].sort((x, y) => y.plan27 - x.plan27);
+        for (const v of vendors) v.pos.sort((x, y) => y.plan27 - x.plan27);
+        const target = state.targets[a.id] ?? null;
+        return { ...a, vendors, target, gap: target == null ? null : r2(a.plan27 - target) };
+      });
+      return out;
+    },
+
+    totals(filter = () => true) {
+      const t = zero();
+      for (const po of state.pos) {
+        if (!filter(po)) continue;
+        const m = planMonths(po);
+        const f = flags(po);
+        t.budget26 += sum(po.fy26.budget);
+        t.actual26 += sum(po.fy26.actual);
+        t.forecast26 += sum(po.fy26.forecast);
+        t.outturn26 += sum(outturn(po));
+        t.plan27 += sum(m);
+        t.months.forEach((_, i) => { t.months[i] += m[i]; });
+        t.count += 1;
+        if (f.decisionNeeded) { t.decisions += 1; t.decisionValue += sum(m); }
+        if (f.isNew) t.newCount += 1;
+      }
+      const target = sum(Object.values(state.targets));
+      for (const k of ['budget26', 'actual26', 'forecast26', 'outturn26', 'plan27', 'decisionValue']) t[k] = r2(t[k]);
+      t.months = t.months.map(r2);
+      t.target = r2(target);
+      t.gap = r2(t.plan27 - target);
+      t.vendors = new Set(state.pos.filter(filter).map((p) => p.vendor)).size;
+      return t;
+    },
+
+    // Sanity checks shown in the UI: the roll-up must equal the sum of POs.
+    checks() {
+      const tree = api.rollup();
+      const fromTree = r2(sum(tree.map((a) => a.plan27)));
+      const direct = r2(sum(state.pos.map((p) => sum(planMonths(p)))));
+      const vendorSum = r2(sum(tree.flatMap((a) => a.vendors.map((v) => v.plan27))));
+      return { reconciles: Math.abs(fromTree - direct) < 0.05 && Math.abs(vendorSum - direct) < 0.05, fromTree, direct, vendorSum };
+    },
+
+    exportRows() {
+      return state.pos.map((p) => {
+        const m = planMonths(p);
+        return {
+          account: p.account, vendor: p.vendor, po: p.id, description: p.description, cost_centre: p.costCentre, owner: p.owner,
+          status: p.status, end_date: p.endDate || '', decision: p.decision || '', method: p.plan.method, uplift_pct: r2((p.plan.uplift || 0) * 100),
+          fy26_budget: r2(sum(p.fy26.budget)), fy26_outturn: r2(sum(outturn(p))), fy27_plan: r2(sum(m)),
+          ...Object.fromEntries(m.map((v, i) => [`plan_${PLAN_MONTHS[i]}`, v])),
+        };
+      });
+    },
+  };
+  return api;
+}
+
+// ---- helpers ---------------------------------------------------------------
+
+function zero() {
+  return { budget26: 0, actual26: 0, forecast26: 0, outturn26: 0, plan27: 0, months: new Array(12).fill(0), count: 0, decisions: 0, decisionValue: 0, newCount: 0, flagCount: { decisionNeeded: 0, expiring: 0, edited: 0, isNew: 0 } };
+}
+function add(target, row) {
+  for (const k of ['budget26', 'actual26', 'forecast26', 'outturn26', 'plan27']) target[k] = r2(target[k] + row[k]);
+  target.months = target.months.map((x, i) => r2(x + row.months[i]));
+  target.count += 1;
+  for (const k of ['decisionNeeded', 'expiring', 'edited', 'isNew']) if (row.flags[k]) target.flagCount[k] += 1;
+  if (row.flags.decisionNeeded) { target.decisions += 1; target.decisionValue = r2(target.decisionValue + row.plan27); }
+}
+
+// A 12-month shape from last year's outturn (even if last year was nothing).
+function shape(po) {
+  const o = outturn(po);
+  const t = sum(o);
+  return t > 0 ? o.map((v) => v / t) : new Array(12).fill(1 / 12);
+}
+
+// Split `total` across `weights` so the pieces add up to exactly `total` to the penny.
+function spread(total, weights) {
+  const out = [];
+  let allocated = 0;
+  for (let i = 0; i < weights.length; i++) {
+    const v = i === weights.length - 1 ? r2(total - allocated) : r2(total * weights[i]);
+    out.push(v);
+    allocated = r2(allocated + v);
+  }
+  return out;
+}
+
+const Planning = { createPlan, planMonths, outturn, runRate, flags, spread, shape, PLAN_MONTHS, PLAN_MONTH_LABELS, METHODS, ACTUAL_MONTHS, r2, sum };
+if (typeof module !== 'undefined' && module.exports) module.exports = Planning;
+else if (typeof window !== 'undefined') window.Planning = Planning;
+</script>
+<script>(function () {
+var defs = {"./match": function (module, exports, require) {
+'use strict';
+// Pattern matching used by model rules.
+//   "Compute: *"     wildcard (case-insensitive)
+//   "!IT Management*" negation
+//   ["a", "b*"]      any of (negations in a list exclude)
+//   "/^60\\d\\d$/"   regular expression
+
+function toRegex(pattern) {
+  if (pattern.length > 2 && pattern.startsWith('/') && pattern.endsWith('/')) return new RegExp(pattern.slice(1, -1), 'i');
+  const body = pattern.split('*').map((s) => s.replace(/[.+?^${}()|[\]\\]/g, '\\$&')).join('.*');
+  return new RegExp(`^${body}$`, 'i');
+}
+
+function matchOne(value, pattern) {
+  return toRegex(String(pattern)).test(String(value ?? ''));
+}
+
+// True if value matches the pattern (string) or pattern list.
+function matches(value, pattern) {
+  if (pattern === undefined || pattern === null) return true;
+  const list = Array.isArray(pattern) ? pattern : [pattern];
+  const positives = list.filter((p) => !String(p).startsWith('!'));
+  const negatives = list.filter((p) => String(p).startsWith('!')).map((p) => String(p).slice(1));
+  if (negatives.some((p) => matchOne(value, p))) return false;
+  return positives.length === 0 || positives.some((p) => matchOne(value, p));
+}
+
+// Every key in `when` must match the same key on the record.
+function whenMatches(record, when) {
+  if (!when) return true;
+  return Object.entries(when).every(([key, pattern]) => matches(record[key], pattern));
+}
+
+module.exports = { matches, whenMatches };
+
+},
+"./engine": function (module, exports, require) {
+'use strict';
+// TBM-style cost allocation engine.
+//
+// Cost flows through layers, e.g. ledger -> tower -> solution -> consumer, the
+// way TBM (Technology Business Management) tools model it (cost pools are a classification of ledger lines;
+// towers, applications and business units are allocation targets). The model
+// is plain JSON (see model/model.json):
+//   classify: tag each ledger line (e.g. cost_pool by GL account)
+//   steps:    move cost from one layer to another (or within a layer, e.g.
+//             Data Center -> Compute) using direct / percent / even / driver /
+//             proportional splits.
+//
+// Every object carries a composition (how much of its cost came from each cost
+// pool, tower, application...), so any later object can be broken back down
+// without re-running anything. Cost is conserved: whatever cannot be allocated
+// lands in "(Unallocated)" on that layer and is reported, never dropped.
+const { matches, whenMatches } = require('./match');
+
+const UNALLOCATED = '(Unallocated)';
+const EPS = 0.005;
+
+function classify(lines, classifiers) {
+  for (const c of classifiers) {
+    for (const line of lines) {
+      const idx = c.rules.findIndex((r) => whenMatches(line, r.when));
+      line[c.dim] = idx >= 0 ? c.rules[idx].value : (c.default || 'Unclassified');
+      line[`_rule_${c.dim}`] = idx >= 0 ? idx : 'default'; // which rule caught this line, for the mechanics view
+    }
+  }
+}
+
+function scaleComp(comp, factor) {
+  const out = {};
+  for (const [dim, parts] of Object.entries(comp)) {
+    out[dim] = {};
+    for (const [k, v] of Object.entries(parts)) out[dim][k] = v * factor;
+  }
+  return out;
+}
+
+function mergeComp(into, comp) {
+  for (const [dim, parts] of Object.entries(comp)) {
+    into[dim] = into[dim] || {};
+    for (const [k, v] of Object.entries(parts)) into[dim][k] = (into[dim][k] || 0) + v;
+  }
+}
+
+function runModel({ ledger, drivers = [], model }) {
+  if (!model || !Array.isArray(model.steps)) throw new Error('Model needs a "steps" array.');
+
+  const lines = ledger.map((row, i) => {
+    const amount = parseAmount(row.amount);
+    if (!Number.isFinite(amount)) throw new Error(`Ledger row ${i + 2}: amount "${row.amount}" is not a number.`);
+    return { ...row, id: row.id || `L${i + 1}`, amount };
+  });
+  classify(lines, model.classify || []);
+  const trackDims = (model.classify || []).map((c) => c.dim);
+
+  const layers = new Map();
+  const layerOf = (name) => {
+    if (!layers.has(name)) layers.set(name, new Map());
+    return layers.get(name);
+  };
+  const objectIn = (layer, name) => {
+    const L = layerOf(layer);
+    if (!L.has(name)) L.set(name, { layer, name, attrs: { name, layer }, amount: 0, received: 0, out: 0, comp: {} });
+    return L.get(name);
+  };
+
+  let total = 0;
+  for (const line of lines) {
+    const o = objectIn('ledger', line.id);
+    o.attrs = { ...line, name: line.id, layer: 'ledger' };
+    o.amount = o.received = line.amount;
+    for (const dim of trackDims) o.comp[dim] = { [line[dim]]: line.amount };
+    total += line.amount;
+  }
+
+  const driverIndex = new Map();
+  for (const d of drivers) {
+    const value = Number(d.value);
+    if (!d.driver || !d.target || !Number.isFinite(value)) continue;
+    if (!driverIndex.has(d.driver)) driverIndex.set(d.driver, []);
+    driverIndex.get(d.driver).push({ key: d.key || '', target: d.target, value });
+  }
+
+  const flows = [];
+  const log = [];
+  const warnings = [];
+  const drainedBy = new Map(); // "layer\u0000name" -> step that emptied it
+  const keyOf = (o) => `${o.layer}\u0000${o.name}`;
+
+  function weightsToShares(weights) {
+    const totalWeight = [...weights.values()].reduce((a, b) => a + b, 0);
+    if (!(totalWeight > 0)) return null;
+    return [...weights].filter(([, w]) => w !== 0).map(([target, w]) => ({ target, share: w / totalWeight }));
+  }
+
+  function resolveShares(split, src, step) {
+    if (split.direct) return [{ target: split.direct, share: 1 }];
+    if (split.even) return split.even.length ? split.even.map((t) => ({ target: t, share: 1 / split.even.length })) : null;
+    if (split.percent) return weightsToShares(new Map(Object.entries(split.percent).map(([t, p]) => [t, Number(p)])));
+    if (split.driver) {
+      const rows = driverIndex.get(split.driver) || [];
+      const keyValue = String(split.keyBy ? src.attrs[split.keyBy] : src.name).toLowerCase();
+      let picked = rows.filter((r) => r.key && r.key.toLowerCase() === keyValue);
+      if (!picked.length) picked = rows.filter((r) => !r.key);
+      if (split.targets) picked = picked.filter((r) => matches(r.target, split.targets));
+      const weights = new Map();
+      for (const r of picked) weights.set(r.target, (weights.get(r.target) || 0) + r.value);
+      return weightsToShares(weights);
+    }
+    if (split.proportional) {
+      const weights = new Map();
+      for (const o of layerOf(step.to).values()) {
+        if (o === src || o.name === UNALLOCATED || o.amount <= EPS) continue;
+        if (matches(o.name, split.proportional)) weights.set(o.name, o.amount);
+      }
+      return weightsToShares(weights);
+    }
+    throw new Error(`Step "${step.name}": unknown split ${JSON.stringify(split)}`);
+  }
+
+  function move(src, step, shares, why) {
+    const amount = src.amount;
+    for (const { target, share } of shares) {
+      const t = objectIn(step.to, target);
+      if (t === src) throw new Error(`Step "${step.name}" allocates "${src.name}" to itself.`);
+      if (drainedBy.has(keyOf(t))) {
+        throw new Error(`Step "${step.name}" sends cost into ${step.to} "${target}", which was already allocated onwards in step "${drainedBy.get(keyOf(t))}". Reorder the steps so it receives everything first.`);
+      }
+      const part = amount * share;
+      // The moving money keeps its history, and is now attributed to this source in its own layer.
+      const comp = scaleComp(src.comp, share);
+      if (src.layer !== 'ledger') comp[src.layer] = { [src.name]: part };
+      mergeComp(t.comp, comp);
+      t.amount += part;
+      t.received += part;
+      // fromAmount + share let any later view re-trace this movement; why says which rule and split did it.
+      flows.push({ step: step.name, fromLayer: src.layer, from: src.name, toLayer: step.to, to: target, amount: part, fromAmount: amount, share, why, comp });
+    }
+    src.out += amount;
+    src.amount = 0;
+    drainedBy.set(keyOf(src), step.name);
+  }
+
+  for (const step of model.steps) {
+    if (!step.from || !step.to) throw new Error(`Step "${step.name}" needs "from" and "to" layers.`);
+    const sources = [...layerOf(step.from).values()].filter((o) =>
+      Math.abs(o.amount) > EPS && o.name !== UNALLOCATED && matches(o.name, step.sources) && whenMatches(o.attrs, step.when));
+    let moved = 0;
+    let unallocated = 0;
+    for (const src of sources) {
+      const ruleIndex = step.rules ? step.rules.findIndex((r) => whenMatches(src.attrs, r.when)) : -1;
+      const rule = step.rules ? step.rules[ruleIndex] : { split: step.split };
+      let split = rule ? rule.split : step.default;
+      let why = { rule: step.rules ? (ruleIndex >= 0 ? ruleIndex : 'default') : 'all', split: describeSplit(split) };
+      let shares = split ? resolveShares(split, src, step) : null;
+      // A rule that matched but has no usable driver data falls back to the step default.
+      if (!shares && step.default && split !== step.default) {
+        why = { rule: 'default', split: describeSplit(step.default), fellBackFrom: describeSplit(split) };
+        shares = resolveShares(step.default, src, step);
+      }
+      if (!shares) {
+        unallocated += src.amount;
+        warnings.push(`${step.name}: no rule or driver data for ${src.layer} "${src.layer === 'ledger' ? describeLine(src.attrs) : src.name}" (${src.amount.toFixed(2)}) - sent to ${UNALLOCATED}.`);
+        shares = [{ target: UNALLOCATED, share: 1 }];
+        why = { rule: 'none', split: 'No rule or driver data matched', fellBackFrom: split ? describeSplit(split) : undefined };
+      }
+      moved += src.amount;
+      move(src, step, shares, why);
+    }
+    log.push({ step: step.name, from: step.from, to: step.to, sources: sources.length, amount: moved, unallocated });
+  }
+
+  // Checks: cost conserved, nothing stranded part-way, unallocated surfaced.
+  let held = 0;
+  const stranded = [];
+  const unallocated = [];
+  for (const [layer, objs] of layers) {
+    for (const o of objs.values()) {
+      held += o.amount;
+      if (Math.abs(o.amount) <= EPS) continue;
+      if (o.name === UNALLOCATED) unallocated.push({ layer, amount: o.amount });
+      else if (layer !== model.finalLayer) stranded.push({ layer, name: o.name, amount: o.amount });
+    }
+  }
+  const checks = {
+    total,
+    held,
+    conserved: Math.abs(total - held) < Math.max(0.01, Math.abs(total) * 1e-9),
+    stranded,
+    unallocated,
+    unallocatedTotal: unallocated.reduce((a, u) => a + u.amount, 0),
+  };
+
+  return { total, lines, layers, flows, log, warnings, checks, model };
+}
+
+// "1,234.50", "£1,234.50", "$ 1 234.50", "(1,234.50)" (accounting negative) and "1234.50-" (trailing minus).
+function parseAmount(value) {
+  let s = String(value ?? '').trim();
+  if (!s) return NaN;
+  let negative = false;
+  if (/^\(.*\)$/.test(s)) { negative = true; s = s.slice(1, -1); }
+  if (/-$/.test(s)) { negative = true; s = s.slice(0, -1); }
+  s = s.replace(/[£$€,\s]/g, '');
+  if (!/^-?\d*\.?\d+$/.test(s)) return NaN;
+  const n = Number(s);
+  return negative ? -Math.abs(n) : n;
+}
+
+// Plain-English description of a split, shown in the "How it works" view.
+function describeSplit(split) {
+  if (!split) return 'No split defined';
+  if (split.direct) return `Everything to ${split.direct}`;
+  if (split.percent) return `Fixed percentages: ${Object.entries(split.percent).map(([t, p]) => `${t} ${p}%`).join(', ')}`;
+  if (split.even) return `Shared evenly across ${split.even.join(', ')}`;
+  if (split.driver) {
+    return `In proportion to driver "${split.driver}"${split.keyBy ? ` (rows keyed by the source's ${split.keyBy})` : ' (rows keyed by the source name, else un-keyed rows)'}${split.targets ? `, only to ${[].concat(split.targets).join(', ')}` : ''}`;
+  }
+  if (split.proportional) return `In proportion to the cost already in ${[].concat(split.proportional).join(', ')}`;
+  return JSON.stringify(split);
+}
+
+function describeLine(a) {
+  return [a.account, a.cost_centre, a.vendor].filter(Boolean).join(' / ') || a.id;
+}
+
+module.exports = { runModel, describeSplit, parseAmount, UNALLOCATED };
+
+},
+"./reports": function (module, exports, require) {
+'use strict';
+// Turns an engine result into the views TBM tools are used for:
+// cost pools, tower costs (with cost-pool mix), unit costs, application TCO,
+// business-unit showback, a cost-flow (Sankey) graph, and period variance.
+const { matches } = require('./match');
+const { UNALLOCATED, describeSplit } = require('./engine');
+
+const towerGroup = (name) => String(name).split(':')[0].trim();
+const r2 = (n) => Math.round(n * 100) / 100;
+
+function add(map, key, value) {
+  map.set(key, (map.get(key) || 0) + value);
+}
+function addComp(target, comp, dim) {
+  for (const [k, v] of Object.entries((comp && comp[dim]) || {})) add(target, k, v);
+}
+const toObj = (map) => Object.fromEntries([...map].sort((a, b) => b[1] - a[1]).map(([k, v]) => [k, r2(v)]));
+
+// Cost that left a layer for a later layer = that object's fully-loaded cost.
+function outflows(result, layer) {
+  return result.flows.filter((f) => f.fromLayer === layer && f.toLayer !== layer);
+}
+
+function costPools(result) {
+  const m = new Map();
+  for (const l of result.lines) add(m, l.cost_pool || 'Unclassified', l.amount);
+  return toObj(m);
+}
+
+function towers(result) {
+  const rows = new Map();
+  for (const f of outflows(result, 'tower')) {
+    if (!rows.has(f.from)) rows.set(f.from, { subTower: f.from, tower: towerGroup(f.from), amount: 0, byPool: new Map(), to: new Map() });
+    const r = rows.get(f.from);
+    r.amount += f.amount;
+    addComp(r.byPool, f.comp, 'cost_pool');
+    add(r.to, f.toLayer, f.amount);
+  }
+  return [...rows.values()]
+    .sort((a, b) => b.amount - a.amount)
+    .map((r) => ({ tower: r.tower, subTower: r.subTower, amount: r2(r.amount), byPool: toObj(r.byPool), allocatedTo: toObj(r.to) }));
+}
+
+function unitCosts(result, drivers) {
+  const towerRows = towers(result);
+  return (result.model.units || []).map((u) => {
+    const cost = towerRows.filter((t) => matches(t.subTower, u.towers)).reduce((a, t) => a + t.amount, 0);
+    let quantity = u.quantity;
+    if (quantity === undefined) {
+      quantity = drivers
+        .filter((d) => d.driver === u.driver && (u.key === undefined || d.key === u.key))
+        .reduce((a, d) => a + Number(d.value || 0), 0);
+    }
+    return { name: u.name, unit: u.unit, cost: r2(cost), quantity, perUnit: quantity > 0 ? r2(cost / quantity) : null };
+  });
+}
+
+function solutions(result) {
+  const rows = new Map();
+  for (const f of outflows(result, 'solution')) {
+    if (!rows.has(f.from)) rows.set(f.from, { name: f.from, amount: 0, byTower: new Map(), byPool: new Map(), byConsumer: new Map() });
+    const r = rows.get(f.from);
+    r.amount += f.amount;
+    for (const [k, v] of Object.entries(f.comp.tower || {})) add(r.byTower, towerGroup(k), v);
+    addComp(r.byPool, f.comp, 'cost_pool');
+    add(r.byConsumer, f.to, f.amount);
+  }
+  return [...rows.values()]
+    .sort((a, b) => b.amount - a.amount)
+    .map((r) => ({ name: r.name, amount: r2(r.amount), byTower: toObj(r.byTower), byPool: toObj(r.byPool), byConsumer: toObj(r.byConsumer) }));
+}
+
+function consumers(result) {
+  const layer = result.layers.get(result.model.finalLayer) || new Map();
+  return [...layer.values()]
+    .filter((o) => Math.abs(o.amount) > 0.005)
+    .sort((a, b) => b.amount - a.amount)
+    .map((o) => {
+      const byTower = new Map();
+      for (const [k, v] of Object.entries(o.comp.tower || {})) add(byTower, towerGroup(k), v);
+      return {
+        name: o.name,
+        amount: r2(o.amount),
+        bySolution: toObj(new Map(Object.entries(o.comp.solution || {}))),
+        byTower: toObj(byTower),
+        byPool: toObj(new Map(Object.entries(o.comp.cost_pool || {}))),
+      };
+    });
+}
+
+// Four-column flow: cost pool -> tower -> application -> business unit.
+function sankey(result, { topSolutions = 12 } = {}) {
+  const solutionRank = solutions(result).map((s) => s.name);
+  const keep = new Set(solutionRank.slice(0, topSolutions));
+  const solName = (n) => (keep.has(n) ? n : 'Other applications');
+  const links = new Map();
+  const link = (from, to, v) => {
+    if (v <= 0.005) return;
+    add(links, `${from}\u0000${to}`, v);
+  };
+  for (const f of outflows(result, 'tower')) {
+    const tg = `tower:${towerGroup(f.from)}`;
+    for (const [pool, v] of Object.entries(f.comp.cost_pool || {})) link(`pool:${pool}`, tg, v);
+    if (f.toLayer === 'solution') link(tg, `solution:${solName(f.to)}`, f.amount);
+    else link(tg, `${f.toLayer}:${f.to}`, f.amount);
+  }
+  for (const f of outflows(result, 'solution')) link(`solution:${solName(f.from)}`, `${f.toLayer}:${f.to}`, f.amount);
+  const nodeTotals = new Map();
+  const out = [];
+  for (const [k, v] of links) {
+    const [source, target] = k.split('\u0000');
+    out.push({ source, target, value: r2(v) });
+    add(nodeTotals, source, 0);
+    add(nodeTotals, target, 0);
+  }
+  const column = { pool: 0, tower: 1, solution: 2, consumer: 3 };
+  const nodes = [...nodeTotals.keys()].map((id) => {
+    const [kind, ...rest] = id.split(':');
+    return { id, kind, column: column[kind] ?? 3, label: rest.join(':') };
+  });
+  return { nodes, links: out };
+}
+
+function summary(result) {
+  const sol = solutions(result);
+  const cons = consumers(result);
+  return {
+    total: r2(result.total),
+    ledgerLines: result.lines.length,
+    unallocated: r2(result.checks.unallocatedTotal),
+    unallocatedPct: result.total ? r2((result.checks.unallocatedTotal / result.total) * 100) : 0,
+    conserved: result.checks.conserved,
+    stranded: result.checks.stranded.map((s) => ({ ...s, amount: r2(s.amount) })),
+    applications: sol.length,
+    consumers: cons.length,
+    warnings: result.warnings.length,
+  };
+}
+
+// ---- Mechanics: everything needed to show *how* the numbers were produced.
+
+function lineLabel(l) {
+  const bits = [l.description || l.account_name || l.account, l.vendor].filter(Boolean);
+  return `${bits.join(' · ')} (${l.cost_centre})`;
+}
+
+// Compact list of every movement of cost, so the browser can trace any ledger
+// line forwards, or explain any figure backwards, without calling the server.
+function flowList(result) {
+  const stepIndex = new Map(result.model.steps.map((s, i) => [s.name, i]));
+  const whys = [];
+  const whyIndex = new Map();
+  const flows = result.flows.map((f) => {
+    const key = JSON.stringify(f.why);
+    if (!whyIndex.has(key)) { whyIndex.set(key, whys.length); whys.push(f.why); }
+    return { s: stepIndex.get(f.step), fl: f.fromLayer, f: f.from, tl: f.toLayer, t: f.to, a: r2(f.amount), sh: Number(f.share.toPrecision(14)), fa: r2(f.fromAmount), w: whyIndex.get(key) };
+  });
+  return { flows, whys };
+}
+
+function mechanics(result, drivers) {
+  const model = result.model;
+  const flowsByStep = new Map();
+  for (const f of result.flows) {
+    if (!flowsByStep.has(f.step)) flowsByStep.set(f.step, []);
+    flowsByStep.get(f.step).push(f);
+  }
+
+  const classify = (model.classify || []).map((c) => {
+    const rows = [...c.rules.map((r, i) => ({ index: i, when: r.when, value: r.value, lines: 0, amount: 0 })),
+      { index: 'default', when: null, value: c.default || 'Unclassified', lines: 0, amount: 0 }];
+    for (const l of result.lines) {
+      const row = rows.find((r) => r.index === l[`_rule_${c.dim}`]);
+      row.lines += 1;
+      row.amount += l.amount;
+    }
+    return { dim: c.dim, rules: rows.map((r) => ({ ...r, amount: r2(r.amount) })) };
+  });
+
+  const driverNames = new Set();
+  const steps = model.steps.map((step, i) => {
+    const flows = flowsByStep.get(step.name) || [];
+    const fallbackDef = step.default ? [{ index: 'default', when: null, split: step.default }] : [];
+    const ruleDefs = step.rules
+      ? [...step.rules.map((r, idx) => ({ index: idx, when: r.when, split: r.split })), ...fallbackDef]
+      : [{ index: 'all', when: null, split: step.split }, ...fallbackDef];
+    for (const d of ruleDefs) if (d.split && d.split.driver) driverNames.add(d.split.driver);
+    const rules = ruleDefs.map((d) => {
+      const mine = flows.filter((f) => f.why.rule === d.index);
+      const from = new Set(mine.map((f) => f.from));
+      const to = new Map();
+      for (const f of mine) to.set(f.to, (to.get(f.to) || 0) + f.amount);
+      const moved = new Map();
+      for (const f of mine) moved.set(`${f.fromLayer}\u0000${f.from}`, f.fromAmount);
+      return {
+        index: d.index,
+        when: d.when,
+        split: d.split ? describeSplit(d.split) : '',
+        driver: d.split && d.split.driver ? d.split.driver : null,
+        objects: from.size,
+        amount: r2([...moved.values()].reduce((a, b) => a + b, 0)),
+        topTargets: [...to].sort((a, b) => b[1] - a[1]).slice(0, 5).map(([name, amount]) => ({ name, amount: r2(amount) })),
+        targetCount: to.size,
+      };
+    });
+    const none = flows.filter((f) => f.why.rule === 'none');
+    return {
+      index: i,
+      name: step.name,
+      from: step.from,
+      to: step.to,
+      sources: step.sources || null,
+      rules,
+      unplaced: none.length ? { objects: new Set(none.map((f) => f.from)).size, amount: r2(none.reduce((a, f) => a + f.amount, 0)) } : null,
+    };
+  });
+
+  const driverTables = [...new Set(drivers.map((d) => d.driver))].sort().map((name) => {
+    const rows = drivers.filter((d) => d.driver === name);
+    const values = rows.map((d) => Number(d.value) || 0);
+    return {
+      name,
+      rows: rows.length,
+      keyed: rows.some((d) => d.key),
+      total: r2(values.reduce((a, b) => a + b, 0)),
+      usedBy: model.steps.filter((s) => JSON.stringify(s).includes(`"driver":"${name}"`)).map((s) => s.name),
+      sample: rows.slice().sort((a, b) => (Number(b.value) || 0) - (Number(a.value) || 0)).slice(0, 6).map((d) => ({ key: d.key, target: d.target, value: Number(d.value) })),
+    };
+  });
+  const missing = [...driverNames].filter((n) => !driverTables.some((t) => t.name === n));
+
+  const layerOrder = [];
+  for (const s of model.steps) for (const l of [s.from, s.to]) if (!layerOrder.includes(l)) layerOrder.push(l);
+
+  return { layerOrder, classify, steps, drivers: driverTables, missingDrivers: missing };
+}
+
+function buildReports(result, drivers) {
+  return {
+    mechanics: mechanics(result, drivers),
+    ledger: result.lines.map((l) => ({ id: l.id, label: lineLabel(l), amount: r2(l.amount), pool: l.cost_pool || null, costCentre: l.cost_centre })),
+    ...flowList(result),
+    finalLayer: result.model.finalLayer,
+    summary: summary(result),
+    steps: result.log.map((s) => ({ ...s, amount: r2(s.amount), unallocated: r2(s.unallocated) })),
+    warnings: result.warnings.slice(0, 200),
+    costPools: costPools(result),
+    towers: towers(result),
+    unitCosts: unitCosts(result, drivers),
+    solutions: solutions(result),
+    consumers: consumers(result),
+    sankey: sankey(result),
+  };
+}
+
+// Period-on-period change for any list of {name|subTower, amount}.
+function variance(current, previous, key = 'name') {
+  const prev = new Map(previous.map((r) => [r[key], r.amount]));
+  const names = new Set([...current.map((r) => r[key]), ...prev.keys()]);
+  return [...names].map((n) => {
+    const now = current.find((r) => r[key] === n)?.amount || 0;
+    const before = prev.get(n) || 0;
+    return { [key]: n, amount: r2(now), previous: r2(before), change: r2(now - before), changePct: before ? r2(((now - before) / before) * 100) : null };
+  }).sort((a, b) => Math.abs(b.change) - Math.abs(a.change));
+}
+
+module.exports = { buildReports, variance, towers, solutions, consumers, unitCosts, costPools, sankey, UNALLOCATED };
+
+}};
+var cache = {};
+function req(n) { if (cache[n]) return cache[n].exports; if (!defs[n]) throw new Error('missing module ' + n); var m = { exports: {} }; cache[n] = m; defs[n](m, m.exports, req); return m.exports; }
+window.TBMEngine = { runModel: req('./engine').runModel, buildReports: req('./reports').buildReports };
+})();</script>
+<script>window.PLANNING_DATA = {"meta":{"company":"Harbour & Finch Insurance (fictional)","planYear":"FY2027","priorYear":"FY2026","actualsThrough":"2026-09","currency":"GBP"},"accounts":[{"id":"6000","name":"Salaries","group":"People"},{"id":"6010","name":"Benefits & pensions","group":"People"},{"id":"6100","name":"Contractors","group":"External labour"},{"id":"6200","name":"Consultancy & managed services","group":"External labour"},{"id":"6300","name":"Hardware maintenance","group":"Hardware"},{"id":"6310","name":"IT equipment depreciation","group":"Hardware"},{"id":"6400","name":"Software licences & support","group":"Software"},{"id":"6410","name":"SaaS subscriptions","group":"Software"},{"id":"6420","name":"Public cloud services","group":"Cloud"},{"id":"6500","name":"Data centre & colocation","group":"Facilities"},{"id":"6510","name":"Power","group":"Facilities"},{"id":"6600","name":"Telecoms & circuits","group":"Telecoms"},{"id":"6900","name":"Travel & other","group":"Other"}],"costCentres":{"CC-100":"Infrastructure Operations","CC-110":"Data Centre","CC-120":"Network & Telecoms","CC-200":"End User Services","CC-300":"Application Development","CC-310":"Application Support","CC-400":"Information Security","CC-500":"CIO Office","CC-510":"Portfolio & PMO"},"targets":{"6000":24510000,"6010":5448000,"6100":3906000,"6200":4071000,"6300":865000,"6310":5033000,"6400":5018000,"6410":3864000,"6420":3913000,"6500":1728000,"6510":818000,"6600":2017000,"6900":146000},"pos":[{"id":"4500010230","kind":"PO","vendor":"Hays","account":"6100","costCentre":"CC-100","description":"Infrastructure contractors - cloud migration","type":"T&M","billing":"monthly","owner":"Priya Shah","status":"Expiring","startDate":"2023-06-01","endDate":"2027-01-31","poValue":475200,"invoicedToDate":317543.55,"decision":"undecided","fy26":{"budget":[38160,38160,38160,38160,38160,38160,38160,38160,38160,38160,38160,38160],"actual":[35408.64,32695.57,34220.56,36661.08,33037.88,39576.48,35925.1,36202.15,33816.09],"forecast":[35314.45,35314.45,35314.45]},"invoices":[{"no":"HAY-80100","date":"2026-01-25","amount":35408.64,"covers":"2026-01"},{"no":"HAY-80101","date":"2026-02-26","amount":32695.57,"covers":"2026-02"},{"no":"HAY-80102","date":"2026-03-27","amount":34220.56,"covers":"2026-03"},{"no":"HAY-80103","date":"2026-04-25","amount":36661.08,"covers":"2026-04"},{"no":"HAY-80104","date":"2026-05-26","amount":33037.88,"covers":"2026-05"},{"no":"HAY-80105","date":"2026-06-27","amount":39576.48,"covers":"2026-06"},{"no":"HAY-80106","date":"2026-07-25","amount":35925.1,"covers":"2026-07"},{"no":"HAY-80107","date":"2026-08-26","amount":36202.15,"covers":"2026-08"},{"no":"HAY-80108","date":"2026-09-27","amount":33816.09,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010231","kind":"PO","vendor":"Hays","account":"6100","costCentre":"CC-100","description":"Infrastructure contractors - service operations","type":"T&M","billing":"monthly","owner":"Tom Whitaker","status":"Open","startDate":"2024-09-01","endDate":"2030-04-28","poValue":316800,"invoicedToDate":218495.97,"decision":null,"fy26":{"budget":[25440,25440,25440,25440,25440,25440,25440,25440,25440,25440,25440,25440],"actual":[22438.3,26245.9,26243.05,22887.01,24649.17,25928.4,23284.74,22562.07,24257.33],"forecast":[23368.05,23368.05,23368.05]},"invoices":[{"no":"HAY-80109","date":"2026-01-25","amount":22438.3,"covers":"2026-01"},{"no":"HAY-80110","date":"2026-02-26","amount":26245.9,"covers":"2026-02"},{"no":"HAY-80111","date":"2026-03-27","amount":26243.05,"covers":"2026-03"},{"no":"HAY-80112","date":"2026-04-25","amount":22887.01,"covers":"2026-04"},{"no":"HAY-80113","date":"2026-05-26","amount":24649.17,"covers":"2026-05"},{"no":"HAY-80114","date":"2026-06-27","amount":25928.4,"covers":"2026-06"},{"no":"HAY-80115","date":"2026-07-25","amount":23284.74,"covers":"2026-07"},{"no":"HAY-80116","date":"2026-08-26","amount":22562.07,"covers":"2026-08"},{"no":"HAY-80117","date":"2026-09-27","amount":24257.33,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010232","kind":"PO","vendor":"Hays","account":"6100","costCentre":"CC-200","description":"Desktop and service desk contractors","type":"T&M","billing":"monthly","owner":"Ana Lopez","status":"Open","startDate":"2024-11-01","endDate":"2029-02-28","poValue":528000,"invoicedToDate":375296.94,"decision":null,"fy26":{"budget":[42400,42400,42400,42400,42400,42400,42400,42400,42400,42400,42400,42400],"actual":[39901.26,42130.93,42654.54,39431.11,38212.16,44979.49,38785.75,43484.24,45717.46],"forecast":[42662.48,42662.48,42662.48]},"invoices":[{"no":"HAY-80118","date":"2026-01-25","amount":39901.26,"covers":"2026-01"},{"no":"HAY-80119","date":"2026-02-26","amount":42130.93,"covers":"2026-02"},{"no":"HAY-80120","date":"2026-03-27","amount":42654.54,"covers":"2026-03"},{"no":"HAY-80121","date":"2026-04-25","amount":39431.11,"covers":"2026-04"},{"no":"HAY-80122","date":"2026-05-26","amount":38212.16,"covers":"2026-05"},{"no":"HAY-80123","date":"2026-06-27","amount":44979.49,"covers":"2026-06"},{"no":"HAY-80124","date":"2026-07-25","amount":38785.75,"covers":"2026-07"},{"no":"HAY-80125","date":"2026-08-26","amount":43484.24,"covers":"2026-08"},{"no":"HAY-80126","date":"2026-09-27","amount":45717.46,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010233","kind":"PO","vendor":"Harvey Nash","account":"6100","costCentre":"CC-300","description":"Development contractors - Claims platform","type":"T&M","billing":"monthly","owner":"Marcus Reid","status":"Expiring","startDate":"2024-09-01","endDate":"2026-12-31","poValue":1425600,"invoicedToDate":979728.9,"decision":"undecided","fy26":{"budget":[114480,114480,114480,114480,114480,114480,114480,114480,114480,114480,114480,114480],"actual":[112267.97,108964.69,112810.91,101742.45,108056.72,114888.95,111428.85,106224.35,103344.01],"forecast":[106999.07,106999.07,106999.07]},"invoices":[{"no":"HAR-80127","date":"2026-01-25","amount":112267.97,"covers":"2026-01"},{"no":"HAR-80128","date":"2026-02-26","amount":108964.69,"covers":"2026-02"},{"no":"HAR-80129","date":"2026-03-27","amount":112810.91,"covers":"2026-03"},{"no":"HAR-80130","date":"2026-04-25","amount":101742.45,"covers":"2026-04"},{"no":"HAR-80131","date":"2026-05-26","amount":108056.72,"covers":"2026-05"},{"no":"HAR-80132","date":"2026-06-27","amount":114888.95,"covers":"2026-06"},{"no":"HAR-80133","date":"2026-07-25","amount":111428.85,"covers":"2026-07"},{"no":"HAR-80134","date":"2026-08-26","amount":106224.35,"covers":"2026-08"},{"no":"HAR-80135","date":"2026-09-27","amount":103344.01,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010234","kind":"PO","vendor":"Harvey Nash","account":"6100","costCentre":"CC-300","description":"Development contractors - Policy admin","type":"T&M","billing":"monthly","owner":"Chloe Bennett","status":"Open","startDate":"2025-10-01","endDate":"2028-01-28","poValue":1108800,"invoicedToDate":762894.35,"decision":null,"fy26":{"budget":[89040,89040,89040,89040,89040,89040,89040,89040,89040,89040,89040,89040],"actual":[78803.74,78201.15,84774.65,85042.92,91810.22,80862.51,88758.56,81732.51,92908.09],"forecast":[87799.72,87799.72,87799.72]},"invoices":[{"no":"HAR-80136","date":"2026-01-25","amount":78803.74,"covers":"2026-01"},{"no":"HAR-80137","date":"2026-02-26","amount":78201.15,"covers":"2026-02"},{"no":"HAR-80138","date":"2026-03-27","amount":84774.65,"covers":"2026-03"},{"no":"HAR-80139","date":"2026-04-25","amount":85042.92,"covers":"2026-04"},{"no":"HAR-80140","date":"2026-05-26","amount":91810.22,"covers":"2026-05"},{"no":"HAR-80141","date":"2026-06-27","amount":80862.51,"covers":"2026-06"},{"no":"HAR-80142","date":"2026-07-25","amount":88758.56,"covers":"2026-07"},{"no":"HAR-80143","date":"2026-08-26","amount":81732.51,"covers":"2026-08"},{"no":"HAR-80144","date":"2026-09-27","amount":92908.09,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010235","kind":"PO","vendor":"Harvey Nash","account":"6100","costCentre":"CC-300","description":"Development contractors - Customer portal","type":"T&M","billing":"monthly","owner":"Sam Okafor","status":"Open","startDate":"2024-05-01","endDate":"2030-12-28","poValue":633600,"invoicedToDate":426983.9,"decision":null,"fy26":{"budget":[50880,50880,50880,50880,50880,50880,50880,50880,50880,50880,50880,50880],"actual":[46976.59,49116.32,44464.92,48596.59,46407.57,49068.35,45291.7,47727.31,49334.55],"forecast":[47451.19,47451.19,47451.19]},"invoices":[{"no":"HAR-80145","date":"2026-01-25","amount":46976.59,"covers":"2026-01"},{"no":"HAR-80146","date":"2026-02-26","amount":49116.32,"covers":"2026-02"},{"no":"HAR-80147","date":"2026-03-27","amount":44464.92,"covers":"2026-03"},{"no":"HAR-80148","date":"2026-04-25","amount":48596.59,"covers":"2026-04"},{"no":"HAR-80149","date":"2026-05-26","amount":46407.57,"covers":"2026-05"},{"no":"HAR-80150","date":"2026-06-27","amount":49068.35,"covers":"2026-06"},{"no":"HAR-80151","date":"2026-07-25","amount":45291.7,"covers":"2026-07"},{"no":"HAR-80152","date":"2026-08-26","amount":47727.31,"covers":"2026-08"},{"no":"HAR-80153","date":"2026-09-27","amount":49334.55,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010236","kind":"PO","vendor":"Accenture","account":"6200","costCentre":"CC-300","description":"Delivery partner SOW - phase 1","type":"Fixed-term SOW","billing":"monthly","owner":"Helen Park","status":"Expiring","startDate":"2025-12-01","endDate":"2026-12-31","poValue":1152000,"invoicedToDate":863639.63,"decision":"undecided","fy26":{"budget":[95299.08,95299.08,95299.08,95299.08,95299.08,95299.08,95299.08,95299.08,95299.08,95299.08,95299.08,95299.08],"actual":[95477.41,97298.41,96313.29,95395.36,94722.62,95126.11,95759.09,96361.5,97185.84],"forecast":[96435.48,96435.48,96435.48]},"invoices":[{"no":"ACC-80154","date":"2026-01-25","amount":95477.41,"covers":"2026-01"},{"no":"ACC-80155","date":"2026-02-26","amount":97298.41,"covers":"2026-02"},{"no":"ACC-80156","date":"2026-03-27","amount":96313.29,"covers":"2026-03"},{"no":"ACC-80157","date":"2026-04-25","amount":95395.36,"covers":"2026-04"},{"no":"ACC-80158","date":"2026-05-26","amount":94722.62,"covers":"2026-05"},{"no":"ACC-80159","date":"2026-06-27","amount":95126.11,"covers":"2026-06"},{"no":"ACC-80160","date":"2026-07-25","amount":95759.09,"covers":"2026-07"},{"no":"ACC-80161","date":"2026-08-26","amount":96361.5,"covers":"2026-08"},{"no":"ACC-80162","date":"2026-09-27","amount":97185.84,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0.03,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010237","kind":"PO","vendor":"Accenture","account":"6200","costCentre":"CC-300","description":"Delivery partner SOW - data programme","type":"Fixed-term SOW","billing":"monthly","owner":"Dan Murray","status":"Open","startDate":"2025-09-01","endDate":"2029-06-28","poValue":3072000,"invoicedToDate":1843993.95,"decision":null,"fy26":{"budget":[64172.74,64172.74,64172.74,64172.74,64172.74,64172.74,64172.74,64172.74,64172.74,64172.74,64172.74,64172.74],"actual":[64482.29,64345.17,64776.01,63503.5,63855.69,64608.76,63497.52,64100.53,63624.48],"forecast":[63740.84,63740.84,63740.84]},"invoices":[{"no":"ACC-80163","date":"2026-01-25","amount":64482.29,"covers":"2026-01"},{"no":"ACC-80164","date":"2026-02-26","amount":64345.17,"covers":"2026-02"},{"no":"ACC-80165","date":"2026-03-27","amount":64776.01,"covers":"2026-03"},{"no":"ACC-80166","date":"2026-04-25","amount":63503.5,"covers":"2026-04"},{"no":"ACC-80167","date":"2026-05-26","amount":63855.69,"covers":"2026-05"},{"no":"ACC-80168","date":"2026-06-27","amount":64608.76,"covers":"2026-06"},{"no":"ACC-80169","date":"2026-07-25","amount":63497.52,"covers":"2026-07"},{"no":"ACC-80170","date":"2026-08-26","amount":64100.53,"covers":"2026-08"},{"no":"ACC-80171","date":"2026-09-27","amount":63624.48,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0.03,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010238","kind":"PO","vendor":"Xerox","account":"6200","costCentre":"CC-200","description":"Managed print service","type":"Fixed-term SOW","billing":"monthly","owner":"Priya Shah","status":"Expiring","startDate":"2023-11-01","endDate":"2026-12-31","poValue":1080000,"invoicedToDate":666171.63,"decision":"undecided","fy26":{"budget":[30498.44,30498.44,30498.44,30498.44,30498.44,30498.44,30498.44,30498.44,30498.44,30498.44,30498.44,30498.44],"actual":[30390.5,29928.76,30247.25,29910.98,30037.02,29872.06,30089.93,30118.37,29576.76],"forecast":[29928.35,29928.35,29928.35]},"invoices":[{"no":"XER-80172","date":"2026-01-25","amount":30390.5,"covers":"2026-01"},{"no":"XER-80173","date":"2026-02-26","amount":29928.76,"covers":"2026-02"},{"no":"XER-80174","date":"2026-03-27","amount":30247.25,"covers":"2026-03"},{"no":"XER-80175","date":"2026-04-25","amount":29910.98,"covers":"2026-04"},{"no":"XER-80176","date":"2026-05-26","amount":30037.02,"covers":"2026-05"},{"no":"XER-80177","date":"2026-06-27","amount":29872.06,"covers":"2026-06"},{"no":"XER-80178","date":"2026-07-25","amount":30089.93,"covers":"2026-07"},{"no":"XER-80179","date":"2026-08-26","amount":30118.37,"covers":"2026-08"},{"no":"XER-80180","date":"2026-09-27","amount":29576.76,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0.03,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010239","kind":"PO","vendor":"Guidewire","account":"6200","costCentre":"CC-310","description":"PolicyCenter support and maintenance","type":"Fixed-term SOW","billing":"monthly","owner":"Tom Whitaker","status":"Expiring","startDate":"2025-10-01","endDate":"2027-03-31","poValue":1428000,"invoicedToDate":925796.64,"decision":"undecided","fy26":{"budget":[60179.91,60179.91,60179.91,60179.91,60179.91,60179.91,60179.91,60179.91,60179.91,60179.91,60179.91,60179.91],"actual":[59916.44,59489.63,59352.1,58758.08,59294.31,59006.33,58839.43,59276.89,59163.43],"forecast":[59093.25,59093.25,59093.25]},"invoices":[{"no":"GUI-80181","date":"2026-01-25","amount":59916.44,"covers":"2026-01"},{"no":"GUI-80182","date":"2026-02-26","amount":59489.63,"covers":"2026-02"},{"no":"GUI-80183","date":"2026-03-27","amount":59352.1,"covers":"2026-03"},{"no":"GUI-80184","date":"2026-04-25","amount":58758.08,"covers":"2026-04"},{"no":"GUI-80185","date":"2026-05-26","amount":59294.31,"covers":"2026-05"},{"no":"GUI-80186","date":"2026-06-27","amount":59006.33,"covers":"2026-06"},{"no":"GUI-80187","date":"2026-07-25","amount":58839.43,"covers":"2026-07"},{"no":"GUI-80188","date":"2026-08-26","amount":59276.89,"covers":"2026-08"},{"no":"GUI-80189","date":"2026-09-27","amount":59163.43,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0.03,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010240","kind":"PO","vendor":"Guidewire","account":"6200","costCentre":"CC-310","description":"Cloud hosting - integration sandbox","type":"Fixed-term SOW","billing":"monthly","owner":"Ana Lopez","status":"Open","startDate":"2023-07-01","endDate":"2028-03-28","poValue":1530000,"invoicedToDate":902854.73,"decision":null,"fy26":{"budget":[25853.39,25853.39,25853.39,25853.39,25853.39,25853.39,25853.39,25853.39,25853.39,25853.39,25853.39,25853.39],"actual":[25574.83,25129.48,25529.47,25791.08,25471.97,25533.87,25802.56,25578.4,25243.07],"forecast":[25541.34,25541.34,25541.34]},"invoices":[{"no":"GUI-80190","date":"2026-01-25","amount":25574.83,"covers":"2026-01"},{"no":"GUI-80191","date":"2026-02-26","amount":25129.48,"covers":"2026-02"},{"no":"GUI-80192","date":"2026-03-27","amount":25529.47,"covers":"2026-03"},{"no":"GUI-80193","date":"2026-04-25","amount":25791.08,"covers":"2026-04"},{"no":"GUI-80194","date":"2026-05-26","amount":25471.97,"covers":"2026-05"},{"no":"GUI-80195","date":"2026-06-27","amount":25533.87,"covers":"2026-06"},{"no":"GUI-80196","date":"2026-07-25","amount":25802.56,"covers":"2026-07"},{"no":"GUI-80197","date":"2026-08-26","amount":25578.4,"covers":"2026-08"},{"no":"GUI-80198","date":"2026-09-27","amount":25243.07,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0.03,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010241","kind":"PO","vendor":"SecureWorks","account":"6200","costCentre":"CC-400","description":"Managed SOC 24x7","type":"Fixed-term SOW","billing":"monthly","owner":"Marcus Reid","status":"Expiring","startDate":"2023-11-01","endDate":"2027-02-28","poValue":2880000,"invoicedToDate":1727981.42,"decision":"undecided","fy26":{"budget":[59211.36,59211.36,59211.36,59211.36,59211.36,59211.36,59211.36,59211.36,59211.36,59211.36,59211.36,59211.36],"actual":[60359.77,60671.1,59871.91,59689.11,59701.33,59645.96,59909.24,59672.75,60460.25],"forecast":[60014.08,60014.08,60014.08]},"invoices":[{"no":"SEC-80199","date":"2026-01-25","amount":60359.77,"covers":"2026-01"},{"no":"SEC-80200","date":"2026-02-26","amount":60671.1,"covers":"2026-02"},{"no":"SEC-80201","date":"2026-03-27","amount":59871.91,"covers":"2026-03"},{"no":"SEC-80202","date":"2026-04-25","amount":59689.11,"covers":"2026-04"},{"no":"SEC-80203","date":"2026-05-26","amount":59701.33,"covers":"2026-05"},{"no":"SEC-80204","date":"2026-06-27","amount":59645.96,"covers":"2026-06"},{"no":"SEC-80205","date":"2026-07-25","amount":59909.24,"covers":"2026-07"},{"no":"SEC-80206","date":"2026-08-26","amount":59672.75,"covers":"2026-08"},{"no":"SEC-80207","date":"2026-09-27","amount":60460.25,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0.03,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010242","kind":"PO","vendor":"Gartner","account":"6200","costCentre":"CC-500","description":"Research and advisory subscription","type":"Fixed-term SOW","billing":"monthly","owner":"Chloe Bennett","status":"Open","startDate":"2025-06-01","endDate":"2028-04-28","poValue":540000,"invoicedToDate":332802.16,"decision":null,"fy26":{"budget":[14711.76,14711.76,14711.76,14711.76,14711.76,14711.76,14711.76,14711.76,14711.76,14711.76,14711.76,14711.76],"actual":[14847.72,14812.12,14881.52,14929.94,15133.3,15201.05,14871.34,15062.08,15063.09],"forecast":[14998.84,14998.84,14998.84]},"invoices":[{"no":"GAR-80208","date":"2026-01-25","amount":14847.72,"covers":"2026-01"},{"no":"GAR-80209","date":"2026-02-26","amount":14812.12,"covers":"2026-02"},{"no":"GAR-80210","date":"2026-03-27","amount":14881.52,"covers":"2026-03"},{"no":"GAR-80211","date":"2026-04-25","amount":14929.94,"covers":"2026-04"},{"no":"GAR-80212","date":"2026-05-26","amount":15133.3,"covers":"2026-05"},{"no":"GAR-80213","date":"2026-06-27","amount":15201.05,"covers":"2026-06"},{"no":"GAR-80214","date":"2026-07-25","amount":14871.34,"covers":"2026-07"},{"no":"GAR-80215","date":"2026-08-26","amount":15062.08,"covers":"2026-08"},{"no":"GAR-80216","date":"2026-09-27","amount":15063.09,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0.03,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010243","kind":"PO","vendor":"Dell","account":"6300","costCentre":"CC-100","description":"ProSupport - production servers","type":"Maintenance","billing":"annual","owner":"Sam Okafor","status":"Open","startDate":"2025-01-01","endDate":"2029-09-28","poValue":1716000,"invoicedToDate":1137169.47,"decision":null,"fy26":{"budget":[36197.17,36197.17,36197.17,36197.17,36197.17,36197.17,36197.17,36197.17,36197.17,36197.17,36197.17,36197.17],"actual":[35540.88,35853.99,35502.32,36272.74,36229.97,36050.48,35495.12,35255.64,35788.46],"forecast":[35513.07,35513.07,35513.07]},"invoices":[{"no":"DEL-80217","date":"2026-03-05","amount":429319.47,"covers":"12 months in advance"}],"plan":{"method":"runrate","uplift":0.04,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010244","kind":"PO","vendor":"Dell","account":"6300","costCentre":"CC-100","description":"ProSupport - DR servers","type":"Maintenance","billing":"annual","owner":"Helen Park","status":"Expiring","startDate":"2023-07-01","endDate":"2026-11-30","poValue":693000,"invoicedToDate":484838.4,"decision":"undecided","fy26":{"budget":[19261.83,19261.83,19261.83,19261.83,19261.83,19261.83,19261.83,19261.83,19261.83,19261.83,19261.83,19261.83],"actual":[19133.35,19203.82,18962.21,19375.57,19432.28,19461.92,19505.16,18970.28,19009.21],"forecast":[19161.55,19161.55,19161.55]},"invoices":[{"no":"DEL-80218","date":"2026-04-05","amount":230738.4,"covers":"12 months in advance"}],"plan":{"method":"runrate","uplift":0.04,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010245","kind":"PO","vendor":"Schneider","account":"6300","costCentre":"CC-110","description":"UPS and cooling maintenance","type":"Maintenance","billing":"annual","owner":"Dan Murray","status":"Open","startDate":"2024-01-01","endDate":"2029-02-28","poValue":900000,"invoicedToDate":576697.65,"decision":null,"fy26":{"budget":[15096.05,15096.05,15096.05,15096.05,15096.05,15096.05,15096.05,15096.05,15096.05,15096.05,15096.05,15096.05],"actual":[15191.66,15202.76,15146.15,15113.63,14945.37,14778.65,15081.98,15146.78,14916.26],"forecast":[15048.34,15048.34,15048.34]},"invoices":[{"no":"SCH-80219","date":"2026-05-05","amount":180697.65,"covers":"12 months in advance"}],"plan":{"method":"runrate","uplift":0.04,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"FA-40120","kind":"Asset","vendor":"Dell","account":"6310","costCentre":"CC-100","description":"Server fleet 2024 refresh","type":"Depreciation","billing":"monthly","owner":"Priya Shah","status":"Open","startDate":"2025-11-01","endDate":"2028-11-28","poValue":4536000,"invoicedToDate":2791999.35,"decision":null,"fy26":{"budget":[125247.64,125247.64,125247.64,125247.64,125247.64,125247.64,125247.64,125247.64,125247.64,125247.64,125247.64,125247.64],"actual":[124554.07,124123.97,124921.99,126194.73,124704.59,126372.2,125051.85,127769.71,125106.24],"forecast":[125975.93,125975.93,125975.93]},"invoices":[{"no":"DEL-80220","date":"2026-01-25","amount":124554.07,"covers":"2026-01"},{"no":"DEL-80221","date":"2026-02-26","amount":124123.97,"covers":"2026-02"},{"no":"DEL-80222","date":"2026-03-27","amount":124921.99,"covers":"2026-03"},{"no":"DEL-80223","date":"2026-04-25","amount":126194.73,"covers":"2026-04"},{"no":"DEL-80224","date":"2026-05-26","amount":124704.59,"covers":"2026-05"},{"no":"DEL-80225","date":"2026-06-27","amount":126372.2,"covers":"2026-06"},{"no":"DEL-80226","date":"2026-07-25","amount":125051.85,"covers":"2026-07"},{"no":"DEL-80227","date":"2026-08-26","amount":127769.71,"covers":"2026-08"},{"no":"DEL-80228","date":"2026-09-27","amount":125106.24,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"FA-40121","kind":"Asset","vendor":"Dell","account":"6310","costCentre":"CC-100","description":"Server fleet 2023 refresh","type":"Depreciation","billing":"monthly","owner":"Tom Whitaker","status":"Open","startDate":"2024-01-01","endDate":"2028-09-28","poValue":2592000,"invoicedToDate":1555355.25,"decision":null,"fy26":{"budget":[54351.18,54351.18,54351.18,54351.18,54351.18,54351.18,54351.18,54351.18,54351.18,54351.18,54351.18,54351.18],"actual":[53698.74,54404.88,54549,53318.87,54632.91,53682.02,53619.57,54786.21,53463.05],"forecast":[53956.28,53956.28,53956.28]},"invoices":[{"no":"DEL-80229","date":"2026-01-25","amount":53698.74,"covers":"2026-01"},{"no":"DEL-80230","date":"2026-02-26","amount":54404.88,"covers":"2026-02"},{"no":"DEL-80231","date":"2026-03-27","amount":54549,"covers":"2026-03"},{"no":"DEL-80232","date":"2026-04-25","amount":53318.87,"covers":"2026-04"},{"no":"DEL-80233","date":"2026-05-26","amount":54632.91,"covers":"2026-05"},{"no":"DEL-80234","date":"2026-06-27","amount":53682.02,"covers":"2026-06"},{"no":"DEL-80235","date":"2026-07-25","amount":53619.57,"covers":"2026-07"},{"no":"DEL-80236","date":"2026-08-26","amount":54786.21,"covers":"2026-08"},{"no":"DEL-80237","date":"2026-09-27","amount":53463.05,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"FA-40122","kind":"Asset","vendor":"NetApp","account":"6310","costCentre":"CC-100","description":"Storage arrays - primary","type":"Depreciation","billing":"monthly","owner":"Ana Lopez","status":"Open","startDate":"2025-09-01","endDate":"2029-03-28","poValue":2592000,"invoicedToDate":1554648.66,"decision":null,"fy26":{"budget":[54417.98,54417.98,54417.98,54417.98,54417.98,54417.98,54417.98,54417.98,54417.98,54417.98,54417.98,54417.98],"actual":[53579.07,54573.57,54366.96,53827.99,53749.22,53722.05,53414.73,54790.69,53424.38],"forecast":[53876.6,53876.6,53876.6]},"invoices":[{"no":"NET-80238","date":"2026-01-25","amount":53579.07,"covers":"2026-01"},{"no":"NET-80239","date":"2026-02-26","amount":54573.57,"covers":"2026-02"},{"no":"NET-80240","date":"2026-03-27","amount":54366.96,"covers":"2026-03"},{"no":"NET-80241","date":"2026-04-25","amount":53827.99,"covers":"2026-04"},{"no":"NET-80242","date":"2026-05-26","amount":53749.22,"covers":"2026-05"},{"no":"NET-80243","date":"2026-06-27","amount":53722.05,"covers":"2026-06"},{"no":"NET-80244","date":"2026-07-25","amount":53414.73,"covers":"2026-07"},{"no":"NET-80245","date":"2026-08-26","amount":54790.69,"covers":"2026-08"},{"no":"NET-80246","date":"2026-09-27","amount":53424.38,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"FA-40123","kind":"Asset","vendor":"NetApp","account":"6310","costCentre":"CC-100","description":"Storage arrays - backup","type":"Depreciation","billing":"monthly","owner":"Marcus Reid","status":"Open","startDate":"2023-10-01","endDate":"2030-12-28","poValue":3024000,"invoicedToDate":1750544.21,"decision":null,"fy26":{"budget":[36580.39,36580.39,36580.39,36580.39,36580.39,36580.39,36580.39,36580.39,36580.39,36580.39,36580.39,36580.39],"actual":[36022.8,36114.92,36264.41,36336.83,36419.24,35736.36,36209.16,36333.67,35506.82],"forecast":[36016.55,36016.55,36016.55]},"invoices":[{"no":"NET-80247","date":"2026-01-25","amount":36022.8,"covers":"2026-01"},{"no":"NET-80248","date":"2026-02-26","amount":36114.92,"covers":"2026-02"},{"no":"NET-80249","date":"2026-03-27","amount":36264.41,"covers":"2026-03"},{"no":"NET-80250","date":"2026-04-25","amount":36336.83,"covers":"2026-04"},{"no":"NET-80251","date":"2026-05-26","amount":36419.24,"covers":"2026-05"},{"no":"NET-80252","date":"2026-06-27","amount":35736.36,"covers":"2026-06"},{"no":"NET-80253","date":"2026-07-25","amount":36209.16,"covers":"2026-07"},{"no":"NET-80254","date":"2026-08-26","amount":36333.67,"covers":"2026-08"},{"no":"NET-80255","date":"2026-09-27","amount":35506.82,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"FA-40124","kind":"Asset","vendor":"Cisco","account":"6310","costCentre":"CC-120","description":"Core network refresh","type":"Depreciation","billing":"monthly","owner":"Chloe Bennett","status":"Open","startDate":"2024-04-01","endDate":"2028-11-28","poValue":1920000,"invoicedToDate":1152927.24,"decision":null,"fy26":{"budget":[39633.86,39633.86,39633.86,39633.86,39633.86,39633.86,39633.86,39633.86,39633.86,39633.86,39633.86,39633.86],"actual":[39459.2,40533.79,40593.62,40239.3,39649.46,40376.38,40283.87,39546.89,40244.73],"forecast":[40025.16,40025.16,40025.16]},"invoices":[{"no":"CIS-80256","date":"2026-01-25","amount":39459.2,"covers":"2026-01"},{"no":"CIS-80257","date":"2026-02-26","amount":40533.79,"covers":"2026-02"},{"no":"CIS-80258","date":"2026-03-27","amount":40593.62,"covers":"2026-03"},{"no":"CIS-80259","date":"2026-04-25","amount":40239.3,"covers":"2026-04"},{"no":"CIS-80260","date":"2026-05-26","amount":39649.46,"covers":"2026-05"},{"no":"CIS-80261","date":"2026-06-27","amount":40376.38,"covers":"2026-06"},{"no":"CIS-80262","date":"2026-07-25","amount":40283.87,"covers":"2026-07"},{"no":"CIS-80263","date":"2026-08-26","amount":39546.89,"covers":"2026-08"},{"no":"CIS-80264","date":"2026-09-27","amount":40244.73,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"FA-40125","kind":"Asset","vendor":"Lenovo","account":"6310","costCentre":"CC-200","description":"Laptop programme 2025","type":"Depreciation","billing":"monthly","owner":"Sam Okafor","status":"Open","startDate":"2025-12-01","endDate":"2028-06-28","poValue":2376000,"invoicedToDate":1465904.86,"decision":null,"fy26":{"budget":[66338.4,66338.4,66338.4,66338.4,66338.4,66338.4,66338.4,66338.4,66338.4,66338.4,66338.4,66338.4],"actual":[66687.16,66662.34,66131.81,65813.52,65664.2,66485.38,66200.29,65699.6,65360.56],"forecast":[65753.48,65753.48,65753.48]},"invoices":[{"no":"LEN-80265","date":"2026-01-25","amount":66687.16,"covers":"2026-01"},{"no":"LEN-80266","date":"2026-02-26","amount":66662.34,"covers":"2026-02"},{"no":"LEN-80267","date":"2026-03-27","amount":66131.81,"covers":"2026-03"},{"no":"LEN-80268","date":"2026-04-25","amount":65813.52,"covers":"2026-04"},{"no":"LEN-80269","date":"2026-05-26","amount":65664.2,"covers":"2026-05"},{"no":"LEN-80270","date":"2026-06-27","amount":66485.38,"covers":"2026-06"},{"no":"LEN-80271","date":"2026-07-25","amount":66200.29,"covers":"2026-07"},{"no":"LEN-80272","date":"2026-08-26","amount":65699.6,"covers":"2026-08"},{"no":"LEN-80273","date":"2026-09-27","amount":65360.56,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"FA-40126","kind":"Asset","vendor":"Lenovo","account":"6310","costCentre":"CC-200","description":"Laptop programme 2024","type":"Depreciation","billing":"monthly","owner":"Helen Park","status":"Open","startDate":"2023-02-01","endDate":"2030-07-28","poValue":3696000,"invoicedToDate":2136792.46,"decision":null,"fy26":{"budget":[44601.37,44601.37,44601.37,44601.37,44601.37,44601.37,44601.37,44601.37,44601.37,44601.37,44601.37,44601.37],"actual":[43466.43,44035.44,44188.83,44127.78,44188.22,43527.71,43655.87,43762.64,43439.54],"forecast":[43619.35,43619.35,43619.35]},"invoices":[{"no":"LEN-80274","date":"2026-01-25","amount":43466.43,"covers":"2026-01"},{"no":"LEN-80275","date":"2026-02-26","amount":44035.44,"covers":"2026-02"},{"no":"LEN-80276","date":"2026-03-27","amount":44188.83,"covers":"2026-03"},{"no":"LEN-80277","date":"2026-04-25","amount":44127.78,"covers":"2026-04"},{"no":"LEN-80278","date":"2026-05-26","amount":44188.22,"covers":"2026-05"},{"no":"LEN-80279","date":"2026-06-27","amount":43527.71,"covers":"2026-06"},{"no":"LEN-80280","date":"2026-07-25","amount":43655.87,"covers":"2026-07"},{"no":"LEN-80281","date":"2026-08-26","amount":43762.64,"covers":"2026-08"},{"no":"LEN-80282","date":"2026-09-27","amount":43439.54,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010246","kind":"PO","vendor":"VMware","account":"6400","costCentre":"CC-100","description":"VMware Cloud Foundation subscription","type":"Licence","billing":"annual","owner":"Dan Murray","status":"Open","startDate":"2023-03-01","endDate":"2028-12-28","poValue":4200000,"invoicedToDate":2688726.77,"decision":null,"fy26":{"budget":[69664.31,69664.31,69664.31,69664.31,69664.31,69664.31,69664.31,69664.31,69664.31,69664.31,69664.31,69664.31],"actual":[70122.32,69910.28,69834.82,70109.23,70191.08,70332.98,69751.71,69506.81,70785.85],"forecast":[70014.79,70014.79,70014.79]},"invoices":[{"no":"VMW-80283","date":"2026-02-05","amount":840726.77,"covers":"12 months in advance"}],"plan":{"method":"runrate","uplift":0.05,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010247","kind":"PO","vendor":"Red Hat","account":"6400","costCentre":"CC-100","description":"Red Hat Enterprise Linux subscriptions","type":"Licence","billing":"annual","owner":"Priya Shah","status":"Expiring","startDate":"2023-11-01","endDate":"2027-02-28","poValue":1200000,"invoicedToDate":795426.37,"decision":"undecided","fy26":{"budget":[24764.65,24764.65,24764.65,24764.65,24764.65,24764.65,24764.65,24764.65,24764.65,24764.65,24764.65,24764.65],"actual":[24719.96,25174.29,25143.79,25272.8,24722.07,25361.45,25175.65,24819.33,24930.44],"forecast":[24975.14,24975.14,24975.14]},"invoices":[{"no":"RED-80284","date":"2026-09-05","amount":300426.37,"covers":"12 months in advance"}],"plan":{"method":"runrate","uplift":0.05,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010248","kind":"PO","vendor":"Microsoft","account":"6400","costCentre":"CC-200","description":"Microsoft 365 E5 enterprise agreement","type":"Licence","billing":"annual","owner":"Tom Whitaker","status":"Open","startDate":"2025-05-01","endDate":"2028-08-28","poValue":5400000,"invoicedToDate":3776578.69,"decision":null,"fy26":{"budget":[147036.09,147036.09,147036.09,147036.09,147036.09,147036.09,147036.09,147036.09,147036.09,147036.09,147036.09,147036.09],"actual":[149529.62,148500.6,150109.43,151042.91,148670.22,147912.16,149154.74,150327.83,152186.51],"forecast":[150556.36,150556.36,150556.36]},"invoices":[{"no":"MIC-80285","date":"2026-09-05","amount":1796578.69,"covers":"12 months in advance"}],"plan":{"method":"runrate","uplift":0.05,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010249","kind":"PO","vendor":"Atlassian","account":"6400","costCentre":"CC-300","description":"Jira and Confluence cloud","type":"Licence","billing":"annual","owner":"Ana Lopez","status":"Open","startDate":"2025-04-01","endDate":"2028-04-28","poValue":792000,"invoicedToDate":555493.09,"decision":null,"fy26":{"budget":[22003.66,22003.66,22003.66,22003.66,22003.66,22003.66,22003.66,22003.66,22003.66,22003.66,22003.66,22003.66],"actual":[21993.39,21876.95,22316.11,21988.85,22269.88,22069.18,22111.79,22057.48,22136.19],"forecast":[22101.82,22101.82,22101.82]},"invoices":[{"no":"ATL-80286","date":"2026-04-05","amount":265093.09,"covers":"12 months in advance"}],"plan":{"method":"runrate","uplift":0.05,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010250","kind":"PO","vendor":"Oracle","account":"6400","costCentre":"CC-310","description":"Oracle database licences and support","type":"Licence","billing":"annual","owner":"Marcus Reid","status":"Open","startDate":"2023-05-01","endDate":"2030-07-28","poValue":7980000,"invoicedToDate":4905690.48,"decision":null,"fy26":{"budget":[93907.42,93907.42,93907.42,93907.42,93907.42,93907.42,93907.42,93907.42,93907.42,93907.42,93907.42,93907.42],"actual":[94612.12,94719.82,96181.89,95912.8,96278.13,95727.81,94874.06,94343.04,95118.19],"forecast":[94778.43,94778.43,94778.43]},"invoices":[{"no":"ORA-80287","date":"2026-04-05","amount":1143690.48,"covers":"12 months in advance"}],"plan":{"method":"runrate","uplift":0.05,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010251","kind":"PO","vendor":"Microsoft","account":"6400","costCentre":"CC-310","description":"SQL Server licences","type":"Licence","billing":"annual","owner":"Chloe Bennett","status":"Open","startDate":"2023-06-01","endDate":"2028-07-28","poValue":2400000,"invoicedToDate":1534308.15,"decision":null,"fy26":{"budget":[40314.3,40314.3,40314.3,40314.3,40314.3,40314.3,40314.3,40314.3,40314.3,40314.3,40314.3,40314.3],"actual":[40221.2,39557.18,40039.62,39932.94,39504.21,39989.45,40005.98,39787.67,39692.86],"forecast":[39828.84,39828.84,39828.84]},"invoices":[{"no":"MIC-80288","date":"2026-02-05","amount":478308.15,"covers":"12 months in advance"}],"plan":{"method":"runrate","uplift":0.05,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010252","kind":"PO","vendor":"Salesforce","account":"6410","costCentre":"CC-310","description":"Sales Cloud","type":"Subscription","billing":"annual","owner":"Sam Okafor","status":"Open","startDate":"2024-06-01","endDate":"2028-11-28","poValue":4032000,"invoicedToDate":2672918.56,"decision":null,"fy26":{"budget":[83444.34,83444.34,83444.34,83444.34,83444.34,83444.34,83444.34,83444.34,83444.34,83444.34,83444.34,83444.34],"actual":[84408.92,85057.43,82748.84,83643.58,84216.09,83228.34,83840.2,85147.32,84998.2],"forecast":[84661.91,84661.91,84661.91]},"invoices":[{"no":"SAL-80289","date":"2026-08-05","amount":1009718.56,"covers":"12 months in advance"}],"plan":{"method":"runrate","uplift":0.07,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010253","kind":"PO","vendor":"Salesforce","account":"6410","costCentre":"CC-310","description":"Service Cloud","type":"Subscription","billing":"annual","owner":"Helen Park","status":"Open","startDate":"2023-07-01","endDate":"2029-09-28","poValue":2592000,"invoicedToDate":1620667.8,"decision":null,"fy26":{"budget":[36210.05,36210.05,36210.05,36210.05,36210.05,36210.05,36210.05,36210.05,36210.05,36210.05,36210.05,36210.05],"actual":[35850.26,36135.84,35717.95,36281.05,35945.82,36389.53,36365.73,35815.44,35999.23],"forecast":[36060.13,36060.13,36060.13]},"invoices":[{"no":"SAL-80290","date":"2026-08-05","amount":432667.8,"covers":"12 months in advance"}],"plan":{"method":"runrate","uplift":0.07,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010254","kind":"PO","vendor":"Workday","account":"6410","costCentre":"CC-310","description":"Workday HCM","type":"Subscription","billing":"annual","owner":"Dan Murray","status":"Open","startDate":"2023-04-01","endDate":"2028-10-28","poValue":4200000,"invoicedToDate":2689716.97,"decision":null,"fy26":{"budget":[69167.56,69167.56,69167.56,69167.56,69167.56,69167.56,69167.56,69167.56,69167.56,69167.56,69167.56,69167.56],"actual":[69233.04,69433.83,69898.25,69892.45,70179.56,70916.43,70215.68,70620.41,70898.08],"forecast":[70578.06,70578.06,70578.06]},"invoices":[{"no":"WOR-80291","date":"2026-05-05","amount":841716.97,"covers":"12 months in advance"}],"plan":{"method":"runrate","uplift":0.07,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010255","kind":"PO","vendor":"ServiceNow","account":"6410","costCentre":"CC-310","description":"ITSM platform","type":"Subscription","billing":"annual","owner":"Priya Shah","status":"Open","startDate":"2024-12-01","endDate":"2030-11-28","poValue":3960000,"invoicedToDate":2478629.44,"decision":null,"fy26":{"budget":[55563.1,55563.1,55563.1,55563.1,55563.1,55563.1,55563.1,55563.1,55563.1,55563.1,55563.1,55563.1],"actual":[55066.18,54510.52,55032.78,55774.28,55801.35,55704.32,54847.16,55600.11,55385.38],"forecast":[55277.55,55277.55,55277.55]},"invoices":[{"no":"SER-80292","date":"2026-08-05","amount":663629.44,"covers":"12 months in advance"}],"plan":{"method":"runrate","uplift":0.07,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010256","kind":"PO","vendor":"DocuSign","account":"6410","costCentre":"CC-310","description":"E-signature","type":"Subscription","billing":"annual","owner":"Tom Whitaker","status":"Open","startDate":"2025-06-01","endDate":"2029-10-28","poValue":576000,"invoicedToDate":380960.05,"decision":null,"fy26":{"budget":[11873.03,11873.03,11873.03,11873.03,11873.03,11873.03,11873.03,11873.03,11873.03,11873.03,11873.03,11873.03],"actual":[12164.83,11862.93,11909.21,11970.29,11977.46,11858.88,11820.45,11827.99,12128],"forecast":[11925.48,11925.48,11925.48]},"invoices":[{"no":"DOC-80293","date":"2026-02-05","amount":143360.05,"covers":"12 months in advance"}],"plan":{"method":"runrate","uplift":0.07,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010257","kind":"PO","vendor":"CrowdStrike","account":"6410","costCentre":"CC-400","description":"Endpoint protection","type":"Subscription","billing":"annual","owner":"Ana Lopez","status":"Open","startDate":"2024-10-01","endDate":"2030-05-28","poValue":2520000,"invoicedToDate":1574485.76,"decision":null,"fy26":{"budget":[34559.19,34559.19,34559.19,34559.19,34559.19,34559.19,34559.19,34559.19,34559.19,34559.19,34559.19,34559.19],"actual":[35087.98,34663.87,35229.91,34667.35,35054.78,35279.22,35037.15,34983.34,34610.72],"forecast":[34877.07,34877.07,34877.07]},"invoices":[{"no":"CRO-80294","date":"2026-07-05","amount":419485.76,"covers":"12 months in advance"}],"plan":{"method":"runrate","uplift":0.07,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010258","kind":"PO","vendor":"AWS","account":"6420","costCentre":"CC-100","description":"AWS enterprise discount commit - production","type":"Usage","billing":"monthly","owner":"Marcus Reid","status":"Open","startDate":"2024-09-01","endDate":"2028-10-28","poValue":1663200,"invoicedToDate":1133055.02,"decision":null,"fy26":{"budget":[103320,103320,103320,103320,103320,103320,103320,103320,103320,103320,103320,103320],"actual":[117770.58,117669.49,124101.26,124246.48,123312.45,128011.52,132307.77,130562.93,135072.54],"forecast":[136892.47,139014.84,141137.2]},"invoices":[{"no":"AWS-80295","date":"2026-01-25","amount":117770.58,"covers":"2026-01"},{"no":"AWS-80296","date":"2026-02-26","amount":117669.49,"covers":"2026-02"},{"no":"AWS-80297","date":"2026-03-27","amount":124101.26,"covers":"2026-03"},{"no":"AWS-80298","date":"2026-04-25","amount":124246.48,"covers":"2026-04"},{"no":"AWS-80299","date":"2026-05-26","amount":123312.45,"covers":"2026-05"},{"no":"AWS-80300","date":"2026-06-27","amount":128011.52,"covers":"2026-06"},{"no":"AWS-80301","date":"2026-07-25","amount":132307.77,"covers":"2026-07"},{"no":"AWS-80302","date":"2026-08-26","amount":130562.93,"covers":"2026-08"},{"no":"AWS-80303","date":"2026-09-27","amount":135072.54,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0.12,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010259","kind":"PO","vendor":"AWS","account":"6420","costCentre":"CC-100","description":"AWS development and test accounts","type":"Usage","billing":"monthly","owner":"Chloe Bennett","status":"Open","startDate":"2023-02-01","endDate":"2030-09-28","poValue":554400,"invoicedToDate":376815.22,"decision":null,"fy26":{"budget":[34440,34440,34440,34440,34440,34440,34440,34440,34440,34440,34440,34440],"actual":[38209.98,40212.78,40629.45,41565.61,42440.01,42622.54,43596.56,44009.6,43528.69],"forecast":[45110.39,45809.77,46509.16]},"invoices":[{"no":"AWS-80304","date":"2026-01-25","amount":38209.98,"covers":"2026-01"},{"no":"AWS-80305","date":"2026-02-26","amount":40212.78,"covers":"2026-02"},{"no":"AWS-80306","date":"2026-03-27","amount":40629.45,"covers":"2026-03"},{"no":"AWS-80307","date":"2026-04-25","amount":41565.61,"covers":"2026-04"},{"no":"AWS-80308","date":"2026-05-26","amount":42440.01,"covers":"2026-05"},{"no":"AWS-80309","date":"2026-06-27","amount":42622.54,"covers":"2026-06"},{"no":"AWS-80310","date":"2026-07-25","amount":43596.56,"covers":"2026-07"},{"no":"AWS-80311","date":"2026-08-26","amount":44009.6,"covers":"2026-08"},{"no":"AWS-80312","date":"2026-09-27","amount":43528.69,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0.12,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010260","kind":"PO","vendor":"AWS","account":"6420","costCentre":"CC-100","description":"AWS data and analytics","type":"Usage","billing":"monthly","owner":"Sam Okafor","status":"Open","startDate":"2025-08-01","endDate":"2028-01-28","poValue":554400,"invoicedToDate":375349.98,"decision":null,"fy26":{"budget":[34440,34440,34440,34440,34440,34440,34440,34440,34440,34440,34440,34440],"actual":[38538.99,38951.4,40000.94,40254.97,42596.04,42621.94,43407.58,43954.71,45023.41],"forecast":[45540.68,46246.74,46952.79]},"invoices":[{"no":"AWS-80313","date":"2026-01-25","amount":38538.99,"covers":"2026-01"},{"no":"AWS-80314","date":"2026-02-26","amount":38951.4,"covers":"2026-02"},{"no":"AWS-80315","date":"2026-03-27","amount":40000.94,"covers":"2026-03"},{"no":"AWS-80316","date":"2026-04-25","amount":40254.97,"covers":"2026-04"},{"no":"AWS-80317","date":"2026-05-26","amount":42596.04,"covers":"2026-05"},{"no":"AWS-80318","date":"2026-06-27","amount":42621.94,"covers":"2026-06"},{"no":"AWS-80319","date":"2026-07-25","amount":43407.58,"covers":"2026-07"},{"no":"AWS-80320","date":"2026-08-26","amount":43954.71,"covers":"2026-08"},{"no":"AWS-80321","date":"2026-09-27","amount":45023.41,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0.12,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010261","kind":"PO","vendor":"Microsoft Azure","account":"6420","costCentre":"CC-100","description":"Azure consumption - DR region","type":"Usage","billing":"monthly","owner":"Helen Park","status":"Open","startDate":"2023-05-01","endDate":"2028-07-28","poValue":448800,"invoicedToDate":303605.84,"decision":null,"fy26":{"budget":[27880,27880,27880,27880,27880,27880,27880,27880,27880,27880,27880,27880],"actual":[31057.13,32750.19,33105.04,32954.7,33103.33,33494.82,34499.81,35934.93,36705.89],"forecast":[36856.38,37427.79,37999.21]},"invoices":[{"no":"MIC-80322","date":"2026-01-25","amount":31057.13,"covers":"2026-01"},{"no":"MIC-80323","date":"2026-02-26","amount":32750.19,"covers":"2026-02"},{"no":"MIC-80324","date":"2026-03-27","amount":33105.04,"covers":"2026-03"},{"no":"MIC-80325","date":"2026-04-25","amount":32954.7,"covers":"2026-04"},{"no":"MIC-80326","date":"2026-05-26","amount":33103.33,"covers":"2026-05"},{"no":"MIC-80327","date":"2026-06-27","amount":33494.82,"covers":"2026-06"},{"no":"MIC-80328","date":"2026-07-25","amount":34499.81,"covers":"2026-07"},{"no":"MIC-80329","date":"2026-08-26","amount":35934.93,"covers":"2026-08"},{"no":"MIC-80330","date":"2026-09-27","amount":36705.89,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0.12,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010262","kind":"PO","vendor":"Microsoft Azure","account":"6420","costCentre":"CC-100","description":"Azure consumption - integration services","type":"Usage","billing":"monthly","owner":"Dan Murray","status":"Open","startDate":"2024-07-01","endDate":"2029-08-28","poValue":673200,"invoicedToDate":459937.75,"decision":null,"fy26":{"budget":[41820,41820,41820,41820,41820,41820,41820,41820,41820,41820,41820,41820],"actual":[47988.11,47153.05,50154.33,50334.02,51242.43,52304.49,53242.54,54121.82,53396.96],"forecast":[55301.89,56159.29,57016.68]},"invoices":[{"no":"MIC-80331","date":"2026-01-25","amount":47988.11,"covers":"2026-01"},{"no":"MIC-80332","date":"2026-02-26","amount":47153.05,"covers":"2026-02"},{"no":"MIC-80333","date":"2026-03-27","amount":50154.33,"covers":"2026-03"},{"no":"MIC-80334","date":"2026-04-25","amount":50334.02,"covers":"2026-04"},{"no":"MIC-80335","date":"2026-05-26","amount":51242.43,"covers":"2026-05"},{"no":"MIC-80336","date":"2026-06-27","amount":52304.49,"covers":"2026-06"},{"no":"MIC-80337","date":"2026-07-25","amount":53242.54,"covers":"2026-07"},{"no":"MIC-80338","date":"2026-08-26","amount":54121.82,"covers":"2026-08"},{"no":"MIC-80339","date":"2026-09-27","amount":53396.96,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0.12,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010263","kind":"PO","vendor":"Equinix","account":"6500","costCentre":"CC-110","description":"Colocation - primary cage","type":"Contract","billing":"quarterly","owner":"Priya Shah","status":"Expiring","startDate":"2024-07-01","endDate":"2027-01-31","poValue":3528000,"invoicedToDate":2173422.49,"decision":"undecided","fy26":{"budget":[96334.01,96334.01,96334.01,96334.01,96334.01,96334.01,96334.01,96334.01,96334.01,96334.01,96334.01,96334.01],"actual":[98261.71,96613.23,97049.68,96974.78,97417.05,98815.58,97248.25,97999.47,99442.74],"forecast":[98230.15,98230.15,98230.15]},"invoices":[{"no":"EQU-80340","date":"2026-03-28","amount":291924.62,"covers":"Q1 2026"},{"no":"EQU-80341","date":"2026-06-28","amount":293207.41,"covers":"Q2 2026"},{"no":"EQU-80342","date":"2026-09-28","amount":294690.46,"covers":"Q3 2026"}],"plan":{"method":"runrate","uplift":0.03,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010264","kind":"PO","vendor":"Equinix","account":"6500","costCentre":"CC-110","description":"Colocation - DR cage","type":"Contract","billing":"quarterly","owner":"Tom Whitaker","status":"Open","startDate":"2024-04-01","endDate":"2028-05-28","poValue":2016000,"invoicedToDate":1209277.3,"decision":null,"fy26":{"budget":[41758.12,41758.12,41758.12,41758.12,41758.12,41758.12,41758.12,41758.12,41758.12,41758.12,41758.12,41758.12],"actual":[42380.39,42369.07,41472.65,41821.19,41897.82,41808.57,42620.96,41407.61,41899.04],"forecast":[41975.87,41975.87,41975.87]},"invoices":[{"no":"EQU-80343","date":"2026-03-28","amount":126222.11,"covers":"Q1 2026"},{"no":"EQU-80344","date":"2026-06-28","amount":125527.58,"covers":"Q2 2026"},{"no":"EQU-80345","date":"2026-09-28","amount":125927.61,"covers":"Q3 2026"}],"plan":{"method":"runrate","uplift":0.03,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010265","kind":"PO","vendor":"EDF","account":"6510","costCentre":"CC-110","description":"Data centre power","type":"Power","billing":"monthly","owner":"Ana Lopez","status":"Open","startDate":"2024-02-01","endDate":"2029-12-28","poValue":3900000,"invoicedToDate":2289626.01,"decision":null,"fy26":{"budget":[63050,63050,63050,63050,63050,63050,63050,63050,63050,63050,63050,63050],"actual":[72767.28,71409.91,69986.34,63711.11,61544.25,59232.55,56622.07,58187.86,60164.64],"forecast":[65000,68900,71755]},"invoices":[{"no":"EDF-80346","date":"2026-01-25","amount":72767.28,"covers":"2026-01"},{"no":"EDF-80347","date":"2026-02-26","amount":71409.91,"covers":"2026-02"},{"no":"EDF-80348","date":"2026-03-27","amount":69986.34,"covers":"2026-03"},{"no":"EDF-80349","date":"2026-04-25","amount":63711.11,"covers":"2026-04"},{"no":"EDF-80350","date":"2026-05-26","amount":61544.25,"covers":"2026-05"},{"no":"EDF-80351","date":"2026-06-27","amount":59232.55,"covers":"2026-06"},{"no":"EDF-80352","date":"2026-07-25","amount":56622.07,"covers":"2026-07"},{"no":"EDF-80353","date":"2026-08-26","amount":58187.86,"covers":"2026-08"},{"no":"EDF-80354","date":"2026-09-27","amount":60164.64,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0.08,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010266","kind":"PO","vendor":"BT","account":"6600","costCentre":"CC-120","description":"WAN circuits","type":"Contract","billing":"quarterly","owner":"Marcus Reid","status":"Expiring","startDate":"2024-05-01","endDate":"2027-03-31","poValue":3024000,"invoicedToDate":1863000.93,"decision":"undecided","fy26":{"budget":[84331.11,84331.11,84331.11,84331.11,84331.11,84331.11,84331.11,84331.11,84331.11,84331.11,84331.11,84331.11],"actual":[83825.78,83048.04,83608.07,83592,83968.32,84689.29,84254.65,82901.43,84313.35],"forecast":[83823.14,83823.14,83823.14]},"invoices":[{"no":"BT-80355","date":"2026-03-28","amount":250481.89,"covers":"Q1 2026"},{"no":"BT-80356","date":"2026-06-28","amount":252249.61,"covers":"Q2 2026"},{"no":"BT-80357","date":"2026-09-28","amount":251469.43,"covers":"Q3 2026"}],"plan":{"method":"runrate","uplift":0.03,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010267","kind":"PO","vendor":"BT","account":"6600","costCentre":"CC-120","description":"SIP and voice","type":"Contract","billing":"quarterly","owner":"Chloe Bennett","status":"Open","startDate":"2023-09-01","endDate":"2029-08-28","poValue":2592000,"invoicedToDate":1510307.29,"decision":null,"fy26":{"budget":[36460.66,36460.66,36460.66,36460.66,36460.66,36460.66,36460.66,36460.66,36460.66,36460.66,36460.66,36460.66],"actual":[35997.51,36200.85,35478.75,35594.64,36100.79,35576.07,35883.05,35569.13,35906.5],"forecast":[35786.23,35786.23,35786.23]},"invoices":[{"no":"BT-80358","date":"2026-03-28","amount":107677.11,"covers":"Q1 2026"},{"no":"BT-80359","date":"2026-06-28","amount":107271.5,"covers":"Q2 2026"},{"no":"BT-80360","date":"2026-09-28","amount":107358.68,"covers":"Q3 2026"}],"plan":{"method":"runrate","uplift":0.03,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010268","kind":"PO","vendor":"Vodafone","account":"6600","costCentre":"CC-120","description":"Mobile contract","type":"Contract","billing":"quarterly","owner":"Sam Okafor","status":"Open","startDate":"2025-11-01","endDate":"2030-11-28","poValue":2700000,"invoicedToDate":1594311.98,"decision":null,"fy26":{"budget":[45526.64,45526.64,45526.64,45526.64,45526.64,45526.64,45526.64,45526.64,45526.64,45526.64,45526.64,45526.64],"actual":[44594.1,45159.52,44637.95,44430.03,45628.59,45586.5,45189.95,45438.97,45646.37],"forecast":[45425.1,45425.1,45425.1]},"invoices":[{"no":"VOD-80361","date":"2026-03-28","amount":134391.57,"covers":"Q1 2026"},{"no":"VOD-80362","date":"2026-06-28","amount":135645.12,"covers":"Q2 2026"},{"no":"VOD-80363","date":"2026-09-28","amount":136275.29,"covers":"Q3 2026"}],"plan":{"method":"runrate","uplift":0.03,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"4500010269","kind":"PO","vendor":"Corporate card (T&E)","account":"6900","costCentre":"CC-500","description":"Travel and expenses","type":"Card","billing":"monthly","owner":"Helen Park","status":"Open","startDate":"2023-06-01","endDate":"2029-04-28","poValue":864000,"invoicedToDate":503397.74,"decision":null,"fy26":{"budget":[12135.14,12135.14,12135.14,12135.14,12135.14,12135.14,12135.14,12135.14,12135.14,12135.14,12135.14,12135.14],"actual":[9643.71,10953.03,12289.85,12823.94,14775.68,12221.75,13424.82,9018.11,12246.85],"forecast":[12000,12000,14400]},"invoices":[{"no":"COR-80364","date":"2026-01-25","amount":9643.71,"covers":"2026-01"},{"no":"COR-80365","date":"2026-02-26","amount":10953.03,"covers":"2026-02"},{"no":"COR-80366","date":"2026-03-27","amount":12289.85,"covers":"2026-03"},{"no":"COR-80367","date":"2026-04-25","amount":12823.94,"covers":"2026-04"},{"no":"COR-80368","date":"2026-05-26","amount":14775.68,"covers":"2026-05"},{"no":"COR-80369","date":"2026-06-27","amount":12221.75,"covers":"2026-06"},{"no":"COR-80370","date":"2026-07-25","amount":13424.82,"covers":"2026-07"},{"no":"COR-80371","date":"2026-08-26","amount":9018.11,"covers":"2026-08"},{"no":"COR-80372","date":"2026-09-27","amount":12246.85,"covers":"2026-09"}],"plan":{"method":"runrate","uplift":0,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":""}},{"id":"HC-CC-100-SAL","kind":"Payroll","vendor":"Payroll - Infrastructure Operations","account":"6000","costCentre":"CC-100","description":"Salaries, Infrastructure Operations team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[419141.58,419141.58,419141.58,419141.58,419141.58,419141.58,419141.58,419141.58,419141.58,419141.58,419141.58,419141.58],"actual":[420000,420000,420000,432600,432600,432600,432600,432600,432600],"forecast":[432600,432600,432600]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"HC-CC-100-BEN","kind":"Payroll","vendor":"Payroll - Infrastructure Operations","account":"6010","costCentre":"CC-100","description":"Benefits and pensions, Infrastructure Operations team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[94983.97,94983.97,94983.97,94983.97,94983.97,94983.97,94983.97,94983.97,94983.97,94983.97,94983.97,94983.97],"actual":[95000,95000,95000,97850,97850,97850,97850,97850,97850],"forecast":[97850,97850,97850]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"HC-CC-120-SAL","kind":"Payroll","vendor":"Payroll - Network & Telecoms","account":"6000","costCentre":"CC-120","description":"Salaries, Network & Telecoms team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[85160.83,85160.83,85160.83,85160.83,85160.83,85160.83,85160.83,85160.83,85160.83,85160.83,85160.83,85160.83],"actual":[85000,85000,85000,87550,87550,87550,87550,87550,87550],"forecast":[87550,87550,87550]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"HC-CC-120-BEN","kind":"Payroll","vendor":"Payroll - Network & Telecoms","account":"6010","costCentre":"CC-120","description":"Benefits and pensions, Network & Telecoms team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[18801.44,18801.44,18801.44,18801.44,18801.44,18801.44,18801.44,18801.44,18801.44,18801.44,18801.44,18801.44],"actual":[19000,19000,19000,19570,19570,19570,19570,19570,19570],"forecast":[19570,19570,19570]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"HC-CC-200-SAL","kind":"Payroll","vendor":"Payroll - End User Services","account":"6000","costCentre":"CC-200","description":"Salaries, End User Services team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[261617.36,261617.36,261617.36,261617.36,261617.36,261617.36,261617.36,261617.36,261617.36,261617.36,261617.36,261617.36],"actual":[260000,260000,260000,267800,267800,267800,267800,267800,267800],"forecast":[267800,267800,267800]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"HC-CC-200-BEN","kind":"Payroll","vendor":"Payroll - End User Services","account":"6010","costCentre":"CC-200","description":"Benefits and pensions, End User Services team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[58381.96,58381.96,58381.96,58381.96,58381.96,58381.96,58381.96,58381.96,58381.96,58381.96,58381.96,58381.96],"actual":[58000,58000,58000,59740,59740,59740,59740,59740,59740],"forecast":[59740,59740,59740]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"HC-CC-300-SAL","kind":"Payroll","vendor":"Payroll - Application Development","account":"6000","costCentre":"CC-300","description":"Salaries, Application Development team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[527557.1,527557.1,527557.1,527557.1,527557.1,527557.1,527557.1,527557.1,527557.1,527557.1,527557.1,527557.1],"actual":[520000,520000,520000,535600,535600,535600,535600,535600,535600],"forecast":[535600,535600,535600]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"HC-CC-300-BEN","kind":"Payroll","vendor":"Payroll - Application Development","account":"6010","costCentre":"CC-300","description":"Benefits and pensions, Application Development team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[113408.31,113408.31,113408.31,113408.31,113408.31,113408.31,113408.31,113408.31,113408.31,113408.31,113408.31,113408.31],"actual":[115000,115000,115000,118450,118450,118450,118450,118450,118450],"forecast":[118450,118450,118450]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"HC-CC-310-SAL","kind":"Payroll","vendor":"Payroll - Application Support","account":"6000","costCentre":"CC-310","description":"Salaries, Application Support team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[297874.28,297874.28,297874.28,297874.28,297874.28,297874.28,297874.28,297874.28,297874.28,297874.28,297874.28,297874.28],"actual":[300000,300000,300000,309000,309000,309000,309000,309000,309000],"forecast":[309000,309000,309000]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"HC-CC-310-BEN","kind":"Payroll","vendor":"Payroll - Application Support","account":"6010","costCentre":"CC-310","description":"Benefits and pensions, Application Support team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[67214.76,67214.76,67214.76,67214.76,67214.76,67214.76,67214.76,67214.76,67214.76,67214.76,67214.76,67214.76],"actual":[66000,66000,66000,67980,67980,67980,67980,67980,67980],"forecast":[67980,67980,67980]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"HC-CC-400-SAL","kind":"Payroll","vendor":"Payroll - Information Security","account":"6000","costCentre":"CC-400","description":"Salaries, Information Security team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[142477.86,142477.86,142477.86,142477.86,142477.86,142477.86,142477.86,142477.86,142477.86,142477.86,142477.86,142477.86],"actual":[140000,140000,140000,144200,144200,144200,144200,144200,144200],"forecast":[144200,144200,144200]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"HC-CC-400-BEN","kind":"Payroll","vendor":"Payroll - Information Security","account":"6010","costCentre":"CC-400","description":"Benefits and pensions, Information Security team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[31261.66,31261.66,31261.66,31261.66,31261.66,31261.66,31261.66,31261.66,31261.66,31261.66,31261.66,31261.66],"actual":[31000,31000,31000,31930,31930,31930,31930,31930,31930],"forecast":[31930,31930,31930]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"HC-CC-500-SAL","kind":"Payroll","vendor":"Payroll - CIO Office","account":"6000","costCentre":"CC-500","description":"Salaries, CIO Office team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[95356.53,95356.53,95356.53,95356.53,95356.53,95356.53,95356.53,95356.53,95356.53,95356.53,95356.53,95356.53],"actual":[95000,95000,95000,97850,97850,97850,97850,97850,97850],"forecast":[97850,97850,97850]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"HC-CC-500-BEN","kind":"Payroll","vendor":"Payroll - CIO Office","account":"6010","costCentre":"CC-500","description":"Benefits and pensions, CIO Office team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[21242.09,21242.09,21242.09,21242.09,21242.09,21242.09,21242.09,21242.09,21242.09,21242.09,21242.09,21242.09],"actual":[21000,21000,21000,21630,21630,21630,21630,21630,21630],"forecast":[21630,21630,21630]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"HC-CC-510-SAL","kind":"Payroll","vendor":"Payroll - Portfolio & PMO","account":"6000","costCentre":"CC-510","description":"Salaries, Portfolio & PMO team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[108434.28,108434.28,108434.28,108434.28,108434.28,108434.28,108434.28,108434.28,108434.28,108434.28,108434.28,108434.28],"actual":[110000,110000,110000,113300,113300,113300,113300,113300,113300],"forecast":[113300,113300,113300]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"HC-CC-510-BEN","kind":"Payroll","vendor":"Payroll - Portfolio & PMO","account":"6010","costCentre":"CC-510","description":"Benefits and pensions, Portfolio & PMO team","type":"Payroll","billing":"monthly","owner":"HR Business Partner","status":"Open","startDate":"2020-01-01","endDate":null,"poValue":0,"invoicedToDate":0,"decision":null,"fy26":{"budget":[24007.32,24007.32,24007.32,24007.32,24007.32,24007.32,24007.32,24007.32,24007.32,24007.32,24007.32,24007.32],"actual":[24000,24000,24000,24720,24720,24720,24720,24720,24720],"forecast":[24720,24720,24720]},"invoices":[],"plan":{"method":"runrate","uplift":0.035,"manual":null,"stopAfter":null,"start":null,"months":0,"monthly":0,"note":"Includes the April pay award."}},{"id":"PR-9001","kind":"New","vendor":"Datadog","account":"6410","costCentre":"CC-100","description":"Observability platform","type":"Planned purchase","billing":"monthly","owner":"Marcus Reid","status":"Planned","startDate":"2027-03-01","endDate":null,"poValue":90000,"invoicedToDate":0,"decision":null,"fy26":{"budget":[0,0,0,0,0,0,0,0,0,0,0,0],"actual":[0,0,0,0,0,0,0,0,0],"forecast":[0,0,0]},"invoices":[],"plan":{"method":"new","uplift":0,"manual":null,"stopAfter":null,"start":"2027-03","months":10,"monthly":9000,"note":"Requisition not raised yet."},"edited":false},{"id":"PR-9002","kind":"New","vendor":"Snowflake","account":"6410","costCentre":"CC-310","description":"Data platform consumption","type":"Planned purchase","billing":"monthly","owner":"Chloe Bennett","status":"Planned","startDate":"2027-02-01","endDate":null,"poValue":198000,"invoicedToDate":0,"decision":null,"fy26":{"budget":[0,0,0,0,0,0,0,0,0,0,0,0],"actual":[0,0,0,0,0,0,0,0,0],"forecast":[0,0,0]},"invoices":[],"plan":{"method":"new","uplift":0,"manual":null,"stopAfter":null,"start":"2027-02","months":11,"monthly":18000,"note":"Requisition not raised yet."},"edited":false},{"id":"PR-9003","kind":"New","vendor":"Okta","account":"6410","costCentre":"CC-400","description":"Workforce identity","type":"Planned purchase","billing":"monthly","owner":"Sam Okafor","status":"Planned","startDate":"2027-01-01","endDate":null,"poValue":90000,"invoicedToDate":0,"decision":null,"fy26":{"budget":[0,0,0,0,0,0,0,0,0,0,0,0],"actual":[0,0,0,0,0,0,0,0,0],"forecast":[0,0,0]},"invoices":[],"plan":{"method":"new","uplift":0,"manual":null,"stopAfter":null,"start":"2027-01","months":12,"monthly":7500,"note":"Requisition not raised yet."},"edited":false},{"id":"PR-9004","kind":"New","vendor":"Accenture","account":"6200","costCentre":"CC-300","description":"Delivery partner SOW - phase 2","type":"Planned purchase","billing":"monthly","owner":"Helen Park","status":"Planned","startDate":"2027-04-01","endDate":null,"poValue":630000,"invoicedToDate":0,"decision":null,"fy26":{"budget":[0,0,0,0,0,0,0,0,0,0,0,0],"actual":[0,0,0,0,0,0,0,0,0],"forecast":[0,0,0]},"invoices":[],"plan":{"method":"new","uplift":0,"manual":null,"stopAfter":null,"start":"2027-04","months":9,"monthly":70000,"note":"Requisition not raised yet."},"edited":false},{"id":"PR-9005","kind":"New","vendor":"AWS","account":"6420","costCentre":"CC-100","description":"Savings plan - compute","type":"Planned purchase","billing":"monthly","owner":"Dan Murray","status":"Planned","startDate":"2027-03-01","endDate":null,"poValue":250000,"invoicedToDate":0,"decision":null,"fy26":{"budget":[0,0,0,0,0,0,0,0,0,0,0,0],"actual":[0,0,0,0,0,0,0,0,0],"forecast":[0,0,0]},"invoices":[],"plan":{"method":"new","uplift":0,"manual":null,"stopAfter":null,"start":"2027-03","months":10,"monthly":25000,"note":"Requisition not raised yet."},"edited":false}]}; window.IMPACT_INPUT = {"model":{"name":"Sample TBM model (Harbour & Finch Insurance - fictional)","notes":"Cost pools and towers follow the public TBM Council taxonomy (v4-style names, simplified). Edit freely: every rule is data, not code.","finalLayer":"consumer","classify":[{"dim":"cost_pool","default":"Other","rules":[{"when":{"account":["6000","6010"]},"value":"Internal Labor"},{"when":{"account":"6100"},"value":"External Labor"},{"when":{"account":["6200","6420"]},"value":"Outside Services"},{"when":{"account":"63*"},"value":"Hardware"},{"when":{"account":["6400","6410"]},"value":"Software"},{"when":{"account":"65*"},"value":"Facilities & Power"},{"when":{"account":"6600"},"value":"Telecom"},{"when":{"account":"6900"},"value":"Travel & Other"}]}],"steps":[{"name":"General ledger to IT towers","from":"ledger","to":"tower","rules":[{"when":{"vendor":["AWS","Microsoft Azure"]},"split":{"direct":"Compute: Public Cloud"}},{"when":{"cost_centre":"CC-110"},"split":{"direct":"Data Center: Enterprise Data Center"}},{"when":{"cost_centre":"CC-100","vendor":"NetApp"},"split":{"direct":"Storage: Online Storage"}},{"when":{"cost_centre":"CC-100","vendor":"Red Hat"},"split":{"direct":"Compute: Linux"}},{"when":{"cost_centre":"CC-100","vendor":["Dell","VMware"]},"split":{"percent":{"Compute: Windows":55,"Compute: Linux":45}}},{"when":{"cost_centre":"CC-100"},"split":{"driver":"infra_time"}},{"when":{"cost_centre":"CC-120","vendor":"Vodafone"},"split":{"direct":"End User: Mobile Devices"}},{"when":{"cost_centre":"CC-120"},"split":{"percent":{"Network: WAN & LAN":78,"Network: Voice":22}}},{"when":{"cost_centre":"CC-200","vendor":"Microsoft"},"split":{"direct":"End User: Productivity & Collaboration"}},{"when":{"cost_centre":"CC-200","vendor":"Xerox"},"split":{"direct":"Output: Print"}},{"when":{"cost_centre":"CC-200"},"split":{"driver":"eus_time"}},{"when":{"cost_centre":"CC-300"},"split":{"direct":"Application: Development"}},{"when":{"cost_centre":"CC-310","vendor":["Oracle","Microsoft"]},"split":{"direct":"Platform: Database"}},{"when":{"cost_centre":"CC-310","vendor":["Salesforce","Workday","DocuSign","Guidewire"]},"split":{"direct":"Application: Business Software"}},{"when":{"cost_centre":"CC-310","vendor":"ServiceNow"},"split":{"direct":"Delivery: Service Management"}},{"when":{"cost_centre":"CC-310"},"split":{"direct":"Application: Support & Operations"}},{"when":{"cost_centre":"CC-400"},"split":{"direct":"Security & Compliance: Security"}},{"when":{"cost_centre":"CC-500"},"split":{"direct":"IT Management: Strategy & Planning"}},{"when":{"cost_centre":"CC-510"},"split":{"direct":"Delivery: Project Management"}}]},{"name":"Data center to infrastructure towers","from":"tower","to":"tower","sources":"Data Center: *","split":{"driver":"dc_space"}},{"name":"IT management overhead spread across towers","from":"tower","to":"tower","sources":"IT Management: *","split":{"proportional":["*","!IT Management*","!Data Center*"]}},{"name":"Towers to applications","from":"tower","to":"solution","sources":["Compute: *","Storage: *","Platform: *","Application: *","Delivery: Project Management"],"rules":[{"when":{"name":["Compute: Windows","Compute: Linux"]},"split":{"driver":"servers"}},{"when":{"name":"Compute: Public Cloud"},"split":{"driver":"cloud_spend"}},{"when":{"name":"Storage: *"},"split":{"driver":"storage_tb"}},{"when":{"name":"Platform: Database"},"split":{"driver":"db_instances"}},{"when":{"name":["Application: Development","Delivery: Project Management"]},"split":{"driver":"dev_hours"}},{"when":{"name":"Application: Support & Operations"},"split":{"driver":"support_tickets"}},{"when":{"name":"Application: Business Software"},"split":{"driver":"saas_spend"}}]},{"name":"Shared services to business units","from":"tower","to":"consumer","sources":["End User: *","Network: *","Output: *","Security & Compliance: *","Delivery: Service Desk","Delivery: Service Management"],"split":{"driver":"headcount"}},{"name":"Applications to business units","from":"solution","to":"consumer","split":{"driver":"app_users"},"default":{"driver":"headcount"}}],"units":[{"name":"Windows server","unit":"server / month","towers":"Compute: Windows","driver":"servers","key":"Compute: Windows"},{"name":"Linux server","unit":"server / month","towers":"Compute: Linux","driver":"servers","key":"Compute: Linux"},{"name":"Storage","unit":"TB / month","towers":"Storage: *","driver":"storage_tb"},{"name":"Database instance","unit":"instance / month","towers":"Platform: Database","driver":"db_instances"},{"name":"End-user services","unit":"employee / month","towers":"End User: *","driver":"headcount"},{"name":"Application support","unit":"ticket","towers":"Application: Support & Operations","driver":"support_tickets"},{"name":"Application development","unit":"hour","towers":"Application: Development","driver":"dev_hours"}]},"drivers":[{"driver":"infra_time","key":"","target":"Compute: Windows","value":"30"},{"driver":"infra_time","key":"","target":"Compute: Linux","value":"28"},{"driver":"infra_time","key":"","target":"Storage: Online Storage","value":"18"},{"driver":"infra_time","key":"","target":"Network: WAN & LAN","value":"4"},{"driver":"infra_time","key":"","target":"Platform: Database","value":"12"},{"driver":"infra_time","key":"","target":"Compute: Public Cloud","value":"8"},{"driver":"eus_time","key":"","target":"End User: Workspace","value":"64"},{"driver":"eus_time","key":"","target":"Delivery: Service Desk","value":"36"},{"driver":"dc_space","key":"","target":"Compute: Windows","value":"140"},{"driver":"dc_space","key":"","target":"Compute: Linux","value":"165"},{"driver":"dc_space","key":"","target":"Storage: Online Storage","value":"110"},{"driver":"dc_space","key":"","target":"Network: WAN & LAN","value":"45"},{"driver":"servers","key":"Compute: Windows","target":"Policy Administration (Guidewire)","value":"22"},{"driver":"servers","key":"Compute: Linux","target":"Policy Administration (Guidewire)","value":"30"},{"driver":"cloud_spend","key":"","target":"Policy Administration (Guidewire)","value":"15.7"},{"driver":"storage_tb","key":"","target":"Policy Administration (Guidewire)","value":"183.6"},{"driver":"db_instances","key":"","target":"Policy Administration (Guidewire)","value":"8"},{"driver":"dev_hours","key":"","target":"Policy Administration (Guidewire)","value":"2299"},{"driver":"support_tickets","key":"","target":"Policy Administration (Guidewire)","value":"411"},{"driver":"app_users","key":"Policy Administration (Guidewire)","target":"Personal Lines","value":"450"},{"driver":"app_users","key":"Policy Administration (Guidewire)","target":"Commercial Lines","value":"400"},{"driver":"app_users","key":"Policy Administration (Guidewire)","target":"Operations","value":"150"},{"driver":"servers","key":"Compute: Windows","target":"Claims Platform","value":"18"},{"driver":"servers","key":"Compute: Linux","target":"Claims Platform","value":"26"},{"driver":"cloud_spend","key":"","target":"Claims Platform","value":"53.29"},{"driver":"storage_tb","key":"","target":"Claims Platform","value":"224.4"},{"driver":"db_instances","key":"","target":"Claims Platform","value":"7"},{"driver":"dev_hours","key":"","target":"Claims Platform","value":"2935"},{"driver":"support_tickets","key":"","target":"Claims Platform","value":"526"},{"driver":"app_users","key":"Claims Platform","target":"Claims","value":"800"},{"driver":"app_users","key":"Claims Platform","target":"Operations","value":"100"},{"driver":"app_users","key":"Claims Platform","target":"Personal Lines","value":"50"},{"driver":"app_users","key":"Claims Platform","target":"Commercial Lines","value":"50"},{"driver":"servers","key":"Compute: Windows","target":"Customer Portal","value":"4"},{"driver":"servers","key":"Compute: Linux","target":"Customer Portal","value":"18"},{"driver":"cloud_spend","key":"","target":"Customer Portal","value":"29.01"},{"driver":"storage_tb","key":"","target":"Customer Portal","value":"40.8"},{"driver":"db_instances","key":"","target":"Customer Portal","value":"3"},{"driver":"dev_hours","key":"","target":"Customer Portal","value":"1628"},{"driver":"support_tickets","key":"","target":"Customer Portal","value":"286"},{"driver":"app_users","key":"Customer Portal","target":"Personal Lines","value":"700"},{"driver":"app_users","key":"Customer Portal","target":"Marketing","value":"200"},{"driver":"app_users","key":"Customer Portal","target":"Claims","value":"100"},{"driver":"servers","key":"Compute: Windows","target":"Broker Portal","value":"6"},{"driver":"servers","key":"Compute: Linux","target":"Broker Portal","value":"10"},{"driver":"cloud_spend","key":"","target":"Broker Portal","value":"10.5"},{"driver":"storage_tb","key":"","target":"Broker Portal","value":"30.6"},{"driver":"db_instances","key":"","target":"Broker Portal","value":"2"},{"driver":"dev_hours","key":"","target":"Broker Portal","value":"879"},{"driver":"support_tickets","key":"","target":"Broker Portal","value":"219"},{"driver":"app_users","key":"Broker Portal","target":"Commercial Lines","value":"850"},{"driver":"app_users","key":"Broker Portal","target":"Operations","value":"150"},{"driver":"servers","key":"Compute: Windows","target":"Pricing Engine","value":"2"},{"driver":"servers","key":"Compute: Linux","target":"Pricing Engine","value":"24"},{"driver":"cloud_spend","key":"","target":"Pricing Engine","value":"34.14"},{"driver":"storage_tb","key":"","target":"Pricing Engine","value":"61.2"},{"driver":"db_instances","key":"","target":"Pricing Engine","value":"2"},{"driver":"dev_hours","key":"","target":"Pricing Engine","value":"1315"},{"driver":"support_tickets","key":"","target":"Pricing Engine","value":"138"},{"driver":"app_users","key":"Pricing Engine","target":"Personal Lines","value":"550"},{"driver":"app_users","key":"Pricing Engine","target":"Commercial Lines","value":"450"},{"driver":"servers","key":"Compute: Windows","target":"Fraud Analytics","value":"2"},{"driver":"servers","key":"Compute: Linux","target":"Fraud Analytics","value":"12"},{"driver":"cloud_spend","key":"","target":"Fraud Analytics","value":"39.06"},{"driver":"storage_tb","key":"","target":"Fraud Analytics","value":"153"},{"driver":"db_instances","key":"","target":"Fraud Analytics","value":"3"},{"driver":"dev_hours","key":"","target":"Fraud Analytics","value":"629"},{"driver":"support_tickets","key":"","target":"Fraud Analytics","value":"69"},{"driver":"app_users","key":"Fraud Analytics","target":"Claims","value":"900"},{"driver":"app_users","key":"Fraud Analytics","target":"Finance","value":"100"},{"driver":"servers","key":"Compute: Windows","target":"Data Warehouse","value":"8"},{"driver":"servers","key":"Compute: Linux","target":"Data Warehouse","value":"20"},{"driver":"cloud_spend","key":"","target":"Data Warehouse","value":"48.71"},{"driver":"storage_tb","key":"","target":"Data Warehouse","value":"428.4"},{"driver":"db_instances","key":"","target":"Data Warehouse","value":"6"},{"driver":"dev_hours","key":"","target":"Data Warehouse","value":"1091"},{"driver":"support_tickets","key":"","target":"Data Warehouse","value":"164"},{"driver":"app_users","key":"Data Warehouse","target":"Finance","value":"300"},{"driver":"app_users","key":"Data Warehouse","target":"Marketing","value":"250"},{"driver":"app_users","key":"Data Warehouse","target":"Personal Lines","value":"150"},{"driver":"app_users","key":"Data Warehouse","target":"Commercial Lines","value":"150"},{"driver":"app_users","key":"Data Warehouse","target":"Claims","value":"150"},{"driver":"servers","key":"Compute: Windows","target":"Finance ERP (Oracle)","value":"14"},{"driver":"servers","key":"Compute: Linux","target":"Finance ERP (Oracle)","value":"6"},{"driver":"storage_tb","key":"","target":"Finance ERP (Oracle)","value":"91.8"},{"driver":"db_instances","key":"","target":"Finance ERP (Oracle)","value":"5"},{"driver":"dev_hours","key":"","target":"Finance ERP (Oracle)","value":"341"},{"driver":"support_tickets","key":"","target":"Finance ERP (Oracle)","value":"182"},{"driver":"app_users","key":"Finance ERP (Oracle)","target":"Finance","value":"850"},{"driver":"app_users","key":"Finance ERP (Oracle)","target":"Corporate","value":"150"},{"driver":"servers","key":"Compute: Windows","target":"CRM (Salesforce)","value":"2"},{"driver":"storage_tb","key":"","target":"CRM (Salesforce)","value":"5.1"},{"driver":"dev_hours","key":"","target":"CRM (Salesforce)","value":"477"},{"driver":"support_tickets","key":"","target":"CRM (Salesforce)","value":"171"},{"driver":"app_users","key":"CRM (Salesforce)","target":"Commercial Lines","value":"500"},{"driver":"app_users","key":"CRM (Salesforce)","target":"Personal Lines","value":"300"},{"driver":"app_users","key":"CRM (Salesforce)","target":"Marketing","value":"200"},{"driver":"storage_tb","key":"","target":"HR (Workday)","value":"2.04"},{"driver":"dev_hours","key":"","target":"HR (Workday)","value":"119"},{"driver":"support_tickets","key":"","target":"HR (Workday)","value":"90"},{"driver":"app_users","key":"HR (Workday)","target":"HR","value":"600"},{"driver":"app_users","key":"HR (Workday)","target":"Corporate","value":"400"},{"driver":"servers","key":"Compute: Windows","target":"Document Management","value":"10"},{"driver":"servers","key":"Compute: Linux","target":"Document Management","value":"4"},{"driver":"cloud_spend","key":"","target":"Document Management","value":"5.25"},{"driver":"storage_tb","key":"","target":"Document Management","value":"265.2"},{"driver":"db_instances","key":"","target":"Document Management","value":"2"},{"driver":"dev_hours","key":"","target":"Document Management","value":"204"},{"driver":"support_tickets","key":"","target":"Document Management","value":"138"},{"driver":"app_users","key":"Document Management","target":"Operations","value":"400"},{"driver":"app_users","key":"Document Management","target":"Claims","value":"300"},{"driver":"app_users","key":"Document Management","target":"Personal Lines","value":"150"},{"driver":"app_users","key":"Document Management","target":"Commercial Lines","value":"150"},{"driver":"servers","key":"Compute: Windows","target":"Payments Gateway","value":"4"},{"driver":"servers","key":"Compute: Linux","target":"Payments Gateway","value":"8"},{"driver":"cloud_spend","key":"","target":"Payments Gateway","value":"14.98"},{"driver":"storage_tb","key":"","target":"Payments Gateway","value":"20.4"},{"driver":"db_instances","key":"","target":"Payments Gateway","value":"2"},{"driver":"dev_hours","key":"","target":"Payments Gateway","value":"546"},{"driver":"support_tickets","key":"","target":"Payments Gateway","value":"92"},{"driver":"app_users","key":"Payments Gateway","target":"Finance","value":"500"},{"driver":"app_users","key":"Payments Gateway","target":"Personal Lines","value":"300"},{"driver":"app_users","key":"Payments Gateway","target":"Claims","value":"200"},{"driver":"servers","key":"Compute: Windows","target":"Contact Centre","value":"8"},{"driver":"servers","key":"Compute: Linux","target":"Contact Centre","value":"4"},{"driver":"cloud_spend","key":"","target":"Contact Centre","value":"9.74"},{"driver":"storage_tb","key":"","target":"Contact Centre","value":"35.7"},{"driver":"db_instances","key":"","target":"Contact Centre","value":"2"},{"driver":"dev_hours","key":"","target":"Contact Centre","value":"260"},{"driver":"support_tickets","key":"","target":"Contact Centre","value":"194"},{"driver":"app_users","key":"Contact Centre","target":"Operations","value":"600"},{"driver":"app_users","key":"Contact Centre","target":"Claims","value":"250"},{"driver":"app_users","key":"Contact Centre","target":"Personal Lines","value":"150"},{"driver":"servers","key":"Compute: Windows","target":"Intranet","value":"3"},{"driver":"servers","key":"Compute: Linux","target":"Intranet","value":"2"},{"driver":"storage_tb","key":"","target":"Intranet","value":"10.2"},{"driver":"db_instances","key":"","target":"Intranet","value":"1"},{"driver":"dev_hours","key":"","target":"Intranet","value":"75"},{"driver":"support_tickets","key":"","target":"Intranet","value":"44"},{"driver":"headcount","key":"","target":"Personal Lines","value":"622"},{"driver":"headcount","key":"","target":"Commercial Lines","value":"412"},{"driver":"headcount","key":"","target":"Claims","value":"558"},{"driver":"headcount","key":"","target":"Finance","value":"158"},{"driver":"headcount","key":"","target":"HR","value":"70"},{"driver":"headcount","key":"","target":"Marketing","value":"111"},{"driver":"headcount","key":"","target":"Operations","value":"349"},{"driver":"headcount","key":"","target":"Corporate","value":"119"},{"driver":"saas_spend","key":"","target":"Policy Administration (Guidewire)","value":"96522.52"},{"driver":"saas_spend","key":"","target":"CRM (Salesforce)","value":"119057.54"},{"driver":"saas_spend","key":"","target":"HR (Workday)","value":"69036.65"}],"driversFrom":"2026-09"};</script>
+<script>
+(function () {
+  const P = window.Planning;
+  const $ = (s, el = document) => el.querySelector(s);
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const gbp = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 });
+  const money = (n) => gbp.format(Math.round(n));
+  const compact = (n) => { const a = Math.abs(n); const s = n < 0 ? '−' : ''; return a >= 1e6 ? `${s}£${(a / 1e6).toFixed(2)}m` : a >= 1e3 ? `${s}£${Math.round(a / 1e3)}k` : `${s}£${Math.round(a)}`; };
+  const STORE = 'tbm-planning-v1';
+  const DATA = window.PLANNING_DATA;
+  const plan = P.createPlan(DATA);
+
+  // Saved edits live in this browser only. Everything is wrapped: storage can be blocked or full.
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORE) || 'null');
+    if (saved && saved.state && saved.state.pos) plan.load(saved.state);
+  } catch (e) { /* start from the sample plan */ }
+  const persist = () => { try { localStorage.setItem(STORE, JSON.stringify({ state: plan.state })); } catch (e) { /* not saved */ } };
+
+  const ui = { expanded: new Set(), selected: null, q: '', cc: 'all', status: 'all', focusKey: null };
+  const kindLabel = { PO: 'PO', Asset: 'Asset', Payroll: 'Payroll', New: 'No PO yet' };
+  const methodLabel = { runrate: 'Run-rate', flat: 'Same as last year', manual: 'Manual', stop: 'Stop', new: 'New' };
+
+  const delta = (v, base) => {
+    if (Math.abs(v) < 0.5) return '<span class="muted">–</span>';
+    const cls = v > 0 ? 'up' : 'down';
+    const sign = v > 0 ? '+' : '−';
+    const pct = base ? ` <span class="muted">${sign}${Math.abs((v / base) * 100).toFixed(1)}%</span>` : '';
+    return `<span class="${cls}">${sign}${compact(Math.abs(v)).replace('−', '')}</span>${pct}`;
+  };
+
+  function filterFn() {
+    const q = ui.q.trim().toLowerCase();
+    return (po) => {
+      if (ui.cc !== 'all' && po.costCentre !== ui.cc) return false;
+      if (q && !`${po.vendor} ${po.id} ${po.description}`.toLowerCase().includes(q)) return false;
+      const f = plan.flags(po);
+      switch (ui.status) {
+        case 'decision': return f.decisionNeeded;
+        case 'expiring': return f.expiring;
+        case 'edited': return f.edited;
+        case 'new': return f.isNew;
+        case 'overspent': return f.overCommitted;
+        default: return true;
+      }
+    };
+  }
+
+  const spark = (months) => {
+    const max = Math.max(...months, 1);
+    return `<div class="mini" role="img" aria-label="Monthly plan Jan to Dec, peak ${money(max)}">${months.map((v) => `<i style="height:${Math.max(1, (v / max) * 100)}%"></i>`).join('')}</div>`;
+  };
+
+  function flagPills(f, po) {
+    const out = [];
+    if (f.decisionNeeded) out.push('<span class="pill warn" title="Ends before the plan year does and nobody has decided">Decision needed</span>');
+    else if (f.expiring) out.push(`<span class="pill mute" title="Ends ${esc(po.endDate)}">Ends ${esc(po.endDate.slice(0, 7))}${po.decision ? `: ${esc(po.decision)}` : ''}</span>`);
+    if (f.isNew) out.push('<span class="pill info">No PO yet</span>');
+    if (f.edited && !f.isNew) out.push('<span class="pill info">Edited</span>');
+    if (f.overCommitted) out.push('<span class="pill bad" title="Invoiced more than 90% of the PO value">PO nearly used</span>');
+    return out.join(' ');
+  }
+
+  // ---------- grid
+  function renderGrid() {
+    const filter = filterFn();
+    const tree = plan.rollup(filter);
+    const filtered = ui.q || ui.cc !== 'all' || ui.status !== 'all';
+    if (!tree.length) { $('#grid').innerHTML = '<tbody><tr><td class="empty">No POs match these filters.</td></tr></tbody>'; return; }
+    const head = `<thead><tr><th style="min-width:340px">Account / vendor / PO</th><th class="n">FY26 budget</th><th class="n">FY26 outturn</th><th class="n">FY27 plan</th><th class="n">vs outturn</th><th class="n" style="min-width:150px">Target and gap</th><th>Uplift</th><th>Monthly plan</th></tr></thead>`;
+    let body = '<tbody>';
+    for (const a of tree) {
+      const aKey = a.id;
+      const aOpen = ui.expanded.has(aKey) || (filtered && true);
+      const gapCls = a.gap == null ? '' : a.gap > 0.5 ? 'gap-bad' : 'gap-ok';
+      const targetCell = a.target == null ? '' : `
+        <div style="display:flex;gap:6px;align-items:center;justify-content:flex-end;flex-wrap:wrap">
+          <input type="number" class="cell-in" data-act="target" data-acct="${a.id}" data-fk="t-${a.id}" value="${Math.round(a.target)}" step="1000" aria-label="Target for ${esc(a.name)}">
+          <span class="${gapCls}" title="Plan minus target">${a.gap > 0.5 ? '+' : a.gap < -0.5 ? '−' : ''}${compact(Math.abs(a.gap)).replace('−', '')}</span>
+          <button data-act="allocate" data-acct="${a.id}" title="Make this account's POs add up to the target" ${Math.abs(a.gap) < 0.5 ? 'disabled' : ''}>Allocate</button>
+        </div>`;
+      body += `<tr class="acct l0"><td><div class="name"><button class="chev" data-act="toggle" data-key="${aKey}" aria-expanded="${aOpen}" aria-label="${aOpen ? 'Collapse' : 'Expand'} ${esc(a.name)}">&#9656;</button><span class="txt">${esc(a.id)} · ${esc(a.name)} <span class="pill mute">${a.count} line${a.count === 1 ? '' : 's'}</span> ${a.decisions ? `<span class="pill warn">${a.decisions} decision${a.decisions === 1 ? '' : 's'}</span>` : ''}</span></div></td>
+        <td class="n">${money(a.budget26)}</td><td class="n">${money(a.outturn26)}</td><td class="n">${money(a.plan27)}</td><td class="n">${delta(a.plan27 - a.outturn26, a.outturn26)}</td><td class="n">${targetCell}</td><td></td><td>${spark(a.months)}</td></tr>`;
+      if (!aOpen) continue;
+      for (const v of a.vendors) {
+        const vKey = `${a.id}|${v.vendor}`;
+        const vOpen = ui.expanded.has(vKey) || (filtered && true);
+        body += `<tr class="vend l1"><td><div class="name"><button class="chev" data-act="toggle" data-key="${esc(vKey)}" aria-expanded="${vOpen}" aria-label="${vOpen ? 'Collapse' : 'Expand'} ${esc(v.vendor)}">&#9656;</button><span class="txt">${esc(v.vendor)} <span class="pill mute">${v.pos.length} PO${v.pos.length === 1 ? '' : 's'}</span> ${v.decisions ? `<span class="pill warn">${v.decisions} decision${v.decisions === 1 ? '' : 's'}</span>` : ''}</span></div></td>
+          <td class="n">${money(v.budget26)}</td><td class="n">${money(v.outturn26)}</td><td class="n">${money(v.plan27)}</td><td class="n">${delta(v.plan27 - v.outturn26, v.outturn26)}</td><td></td><td></td><td>${spark(v.months)}</td></tr>`;
+        if (!vOpen) continue;
+        for (const r of v.pos) {
+          const po = r.po;
+          const sel = ui.selected === po.id + '|' + po.account;
+          const hasUplift = ['runrate', 'flat', 'stop'].includes(po.plan.method);
+          body += `<tr class="po l2 ${sel ? 'sel' : ''}"><td><div class="name"><span style="width:22px"></span>
+              <button class="poLink" data-act="open" data-key="${esc(po.id + '|' + po.account)}" aria-label="Open detail for ${esc(po.vendor)} ${esc(po.id)}"><span class="poId mono">${esc(po.id)}</span> <span class="desc">${esc(po.description)}</span></button>
+              ${flagPills(r.flags, po)}</div></td>
+            <td class="n">${money(r.budget26)}</td><td class="n">${money(r.outturn26)}</td>
+            <td class="n"><input type="number" class="cell-in" data-act="annual" data-key="${esc(po.id + '|' + po.account)}" data-fk="a-${esc(po.id + po.account)}" value="${Math.round(r.plan27)}" step="100" min="0" aria-label="FY27 plan for ${esc(po.vendor)} ${esc(po.id)}"></td>
+            <td class="n">${delta(r.plan27 - r.outturn26, r.outturn26)}</td><td></td>
+            <td>${hasUplift ? `<input type="number" class="cell-in pct-in" data-act="uplift" data-key="${esc(po.id + '|' + po.account)}" data-fk="u-${esc(po.id + po.account)}" value="${P.r2((po.plan.uplift || 0) * 100)}" step="0.5" aria-label="Uplift percent">%` : `<span class="pill mute">${esc(methodLabel[po.plan.method])}</span>`}</td>
+            <td>${spark(r.months)}</td></tr>`;
+        }
+      }
+    }
+    $('#grid').innerHTML = head + body + '</tbody>';
+  }
+
+  // ---------- KPIs
+  function renderKpis() {
+    const t = plan.totals();
+    const f = plan.totals(filterFn());
+    const chk = plan.checks();
+    const over = t.gap > 0.5;
+    $('#kpis').innerHTML = `
+      <div class="kpi"><div class="label">FY27 plan</div><div class="value">${money(t.plan27)}</div><div class="note">${delta(t.plan27 - t.outturn26, t.outturn26)} vs FY26 outturn ${compact(t.outturn26)}</div></div>
+      <div class="kpi"><div class="label">Target</div><div class="value">${money(t.target)}</div><div class="note"><span class="pill ${over ? 'bad' : 'ok'}">${over ? `${compact(t.gap)} over target` : `${compact(Math.abs(t.gap))} under target`}</span></div></div>
+      <div class="kpi"><div class="label">Decisions needed</div><div class="value">${t.decisions}</div><div class="note">${t.decisions ? `${compact(t.decisionValue)} of plan rests on contracts nobody has renewed or lapsed` : 'every ending contract has a decision'}</div></div>
+      <div class="kpi"><div class="label">Plan lines</div><div class="value">${t.count}</div><div class="note">${t.vendors} vendors · ${t.newCount} planned with no PO yet</div></div>
+      <div class="kpi"><div class="label">Check</div><div class="value" style="font-size:18px">${chk.reconciles ? 'Balanced' : 'Does not add up'}</div><div class="note"><span class="pill ${chk.reconciles ? 'ok' : 'bad'}">accounts = vendors = POs</span>${(ui.q || ui.cc !== 'all' || ui.status !== 'all') ? `<br>Showing ${f.count} of ${t.count} lines, ${money(f.plan27)}` : ''}</div></div>`;
+  }
+
+  // ---------- detail
+  function renderDetail() {
+    const el = $('#detail');
+    const layout = $('#layout');
+    if (!ui.selected) { el.hidden = true; layout.classList.remove('with-detail'); return; }
+    const [id, account] = ui.selected.split('|');
+    const po = plan.state.pos.find((p) => p.id === id && p.account === account);
+    if (!po) { ui.selected = null; el.hidden = true; layout.classList.remove('with-detail'); return; }
+    el.hidden = false; layout.classList.add('with-detail');
+    const acct = plan.state.accounts.find((a) => a.id === po.account);
+    const m = plan.planOf(po);
+    const out = P.outturn(po);
+    const f = plan.flags(po);
+    const used = po.poValue > 0 ? Math.min(100, (po.invoicedToDate / po.poValue) * 100) : 0;
+    const key = esc(po.id + '|' + po.account);
+    const canUplift = ['runrate', 'flat', 'stop'].includes(po.plan.method);
+    const months = P.PLAN_MONTH_LABELS;
+    const monthRow = (label, arr, extra = '') => `<tr><td>${label}</td>${arr.map((v, i) => `<td>${extra ? extra(v, i) : Math.round(v).toLocaleString('en-GB')}</td>`).join('')}<td><b>${Math.round(P.sum(arr)).toLocaleString('en-GB')}</b></td></tr>`;
+    el.innerHTML = `
+      <div class="row" style="justify-content:space-between;align-items:flex-start">
+        <div><h2>${esc(po.vendor)}</h2><div class="muted">${esc(po.description)}</div></div>
+        <button data-act="close" aria-label="Close detail">&times;</button>
+      </div>
+      <div class="row" style="margin-top:6px">${flagPills(f, po) || '<span class="pill ok">No flags</span>'} <span class="pill mute">${esc(kindLabel[po.kind])}</span> <span class="pill mute">${esc(po.type)}</span></div>
+      <dl class="facts">
+        <dt>${po.kind === 'PO' ? 'PO number' : po.kind === 'Asset' ? 'Asset ref' : po.kind === 'Payroll' ? 'Headcount ref' : 'Requisition'}</dt><dd class="mono">${esc(po.id)}</dd>
+        <dt>Account</dt><dd>${esc(acct.id)} · ${esc(acct.name)}</dd>
+        <dt>Cost centre</dt><dd>${esc(po.costCentre)} · ${esc(plan.state.costCentres[po.costCentre] || '')}</dd>
+        <dt>Owner</dt><dd>${esc(po.owner)}</dd>
+        <dt>Term</dt><dd>${esc(po.startDate)}${po.endDate ? ` to ${esc(po.endDate)}` : ' onwards'}</dd>
+        <dt>Billing</dt><dd>${esc(po.billing)}</dd>
+      </dl>
+      ${po.poValue ? `<div class="field"><span class="lab">Commitment</span>
+        <div class="bar" role="img" aria-label="${used.toFixed(0)}% of the PO value invoiced"><span class="${used > 90 ? 'hot' : ''}" style="width:${used}%"></span></div>
+        <div class="row" style="justify-content:space-between"><span>${money(po.invoicedToDate)} invoiced of ${money(po.poValue)}</span><span class="muted">${money(Math.max(0, po.poValue - po.invoicedToDate))} left</span></div></div>` : ''}
+      ${f.expiring ? `<div class="field"><span class="lab">Ends ${esc(po.endDate)}: what happens next?</span>
+        <div class="seg" role="group" aria-label="Contract decision">
+          ${['renew', 'lapse', 'undecided'].map((d) => `<button data-act="decision" data-key="${key}" data-d="${d}" aria-pressed="${(po.decision || 'undecided') === d}">${{ renew: 'Renew', lapse: 'Lapse', undecided: 'Undecided' }[d]}</button>`).join('')}
+        </div><span class="muted" style="font-size:12.5px">${po.decision === 'lapse' ? 'Plan stops after the end date.' : po.decision === 'renew' ? 'Plan carries on at the rate below.' : 'Assumed to continue until you decide.'}</span></div>` : ''}
+      <div class="field"><label for="dMethod">How this PO's plan is set</label>
+        <div class="row"><select id="dMethod" data-act="method" data-key="${key}" ${po.kind === 'New' ? 'disabled' : ''}>${['runrate', 'flat', 'manual', 'stop'].concat(po.kind === 'New' ? ['new'] : []).map((x) => `<option value="${x}" ${po.plan.method === x ? 'selected' : ''}>${methodLabel[x]}</option>`).join('')}</select>
+        ${canUplift ? `<label for="dUp" class="muted">Uplift</label><input type="number" id="dUp" class="cell-in pct-in" data-act="uplift" data-key="${key}" data-fk="du-${esc(po.id + po.account)}" value="${P.r2((po.plan.uplift || 0) * 100)}" step="0.5" style="max-width:70px">%` : ''}
+        ${po.plan.method === 'stop' ? `<label for="dStop" class="muted">Stop after</label><select id="dStop" data-act="stopafter" data-key="${key}">${P.PLAN_MONTHS.map((x, i) => `<option value="${x}" ${po.plan.stopAfter === x ? 'selected' : ''}>${months[i]} 2027</option>`).join('')}</select>` : ''}</div>
+        ${po.plan.method === 'new' ? `<div class="row"><label class="muted" for="dMonthly">Monthly £</label><input type="number" id="dMonthly" class="cell-in" data-act="newmonthly" data-key="${key}" value="${po.plan.monthly}" step="500"><span class="muted">for ${po.plan.months} months from ${esc(po.plan.start)}</span></div>` : ''}
+      </div>
+      <div class="field"><span class="lab">Monthly (£)</span>
+        <div style="overflow:auto"><table class="m">
+          <thead><tr><th></th>${months.map((x) => `<th>${x}</th>`).join('')}<th>Year</th></tr></thead>
+          <tbody>
+            ${monthRow('FY26 budget', po.fy26.budget)}
+            ${monthRow('FY26 outturn', out, (v, i) => `${Math.round(v).toLocaleString('en-GB')}<span class="tag-a">${i < P.ACTUAL_MONTHS ? 'A' : 'F'}</span>`)}
+            <tr><td>FY27 plan</td>${m.map((v, i) => `<td><input type="number" data-act="month" data-key="${key}" data-m="${i}" data-fk="m-${esc(po.id + po.account)}-${i}" value="${Math.round(v)}" min="0" step="100" aria-label="${months[i]} 2027 plan"></td>`).join('')}<td><b>${Math.round(P.sum(m)).toLocaleString('en-GB')}</b></td></tr>
+          </tbody></table></div>
+        <span class="muted" style="font-size:12px">A = actual, F = forecast. Typing in a month switches this PO to Manual.</span>
+      </div>
+      ${po.invoices.length ? `<div class="field"><span class="lab">FY26 invoices</span><div style="overflow:auto;max-height:200px"><table class="m"><thead><tr><th>Invoice</th><th>Date</th><th>Covers</th><th>£</th></tr></thead><tbody>
+        ${po.invoices.map((i) => `<tr><td class="mono">${esc(i.no)}</td><td style="text-align:left">${esc(i.date)}</td><td style="text-align:left">${esc(i.covers)}</td><td>${Math.round(i.amount).toLocaleString('en-GB')}</td></tr>`).join('')}</tbody></table></div></div>` : ''}
+      <div class="field"><label for="dNote">Note</label><textarea id="dNote" rows="2" data-act="note" data-key="${key}" placeholder="Why is this plan what it is?">${esc(po.plan.note)}</textarea></div>
+      ${po.kind === 'New' ? `<button data-act="remove" data-key="${key}">Remove this planned PO</button>` : ''}`;
+  }
+
+  // ---------- impact: run the plan through the cost model
+  const impact = { view: 'consumer' };
+  function renderImpact() {
+    const E = window.TBMEngine, input = window.IMPACT_INPUT;
+    const box = $('#impactTable');
+    if (!E || !input) { box.innerHTML = '<tbody><tr><td>The cost model is not available in this build.</td></tr></tbody>'; return; }
+    const ledger = (value) => plan.state.pos
+      .map((po) => ({ account: po.account, cost_centre: po.costCentre, vendor: po.kind === 'Payroll' ? '' : po.vendor, description: po.description, amount: value(po) }))
+      .filter((r) => r.amount > 0);
+    const run = (value) => { const result = E.runModel({ ledger: ledger(value), drivers: input.drivers, model: input.model }); return E.buildReports(result, input.drivers); };
+    let a, b;
+    try { a = run((po) => P.sum(P.outturn(po))); b = run((po) => P.sum(plan.planOf(po))); }
+    catch (err) { box.innerHTML = `<tbody><tr><td>The plan could not be allocated: ${esc(err.message)}</td></tr></tbody>`; return; }
+    const pick = {
+      consumer: (r) => r.consumers.map((x) => [x.name, x.amount]),
+      solution: (r) => r.solutions.map((x) => [x.name, x.amount]),
+      tower: (r) => r.towers.map((x) => [x.subTower, x.amount]),
+    }[impact.view];
+    const before = new Map(pick(a)), after = new Map(pick(b));
+    const names = [...new Set([...before.keys(), ...after.keys()])];
+    const rows = names.map((n) => ({ n, x: before.get(n) || 0, y: after.get(n) || 0 })).sort((p, q) => q.y - p.y);
+    const max = Math.max(...rows.map((r) => Math.max(r.x, r.y)), 1);
+    const unalloc = b.summary.unallocated;
+    $('#impactNote').innerHTML = unalloc > 0.5 ? `<span class="pill bad">${money(unalloc)} could not be placed by the model rules</span>` : '<span class="pill ok">every pound placed</span>';
+    box.innerHTML = `<thead><tr><th style="min-width:200px;text-align:left">${{ consumer: 'Business unit', solution: 'Application', tower: 'IT tower' }[impact.view]}</th><th>FY26 outturn</th><th>FY27 plan</th><th>Change</th><th style="min-width:140px;text-align:left">Plan</th></tr></thead><tbody>${rows.map((r) => `<tr><td style="text-align:left;color:var(--ink)">${esc(r.n)}</td><td>${money(r.x)}</td><td>${money(r.y)}</td><td>${delta(r.y - r.x, r.x)}</td><td style="text-align:left"><div class="bar" style="margin:0"><span style="width:${(r.y / max) * 100}%"></span></div></td></tr>`).join('')}</tbody>`;
+  }
+  for (const btn of document.querySelectorAll('[data-impact]')) {
+    btn.addEventListener('click', () => {
+      impact.view = btn.dataset.impact;
+      for (const o of document.querySelectorAll('[data-impact]')) o.setAttribute('aria-pressed', String(o === btn));
+      renderImpact();
+    });
+  }
+  $('#impact').addEventListener('toggle', () => { if ($('#impact').open) renderImpact(); });
+
+  function renderAll() {
+    renderKpis();
+    renderGrid();
+    renderDetail();
+    if ($('#impact').open) renderImpact();
+    $('#btnUndo').disabled = !plan.canUndo;
+    const n = plan.totals(filterFn()).count;
+    $('#btnBulk').textContent = `Apply to ${n} visible PO${n === 1 ? '' : 's'}`;
+    if (ui.focusKey) {
+      const el = document.querySelector(`[data-fk="${ui.focusKey}"]`);
+      if (el) { el.focus(); if (el.select) el.select(); }
+      ui.focusKey = null;
+    }
+  }
+  const commit = () => { persist(); renderAll(); };
+
+  // ---------- events
+  const parse = (key) => { const [id, account] = key.split('|'); return plan.state.pos.find((p) => p.id === id && p.account === account); };
+  const nextFocus = (input) => {
+    const all = [...document.querySelectorAll(`[data-act="${input.dataset.act}"]`)];
+    const nxt = all[all.indexOf(input) + 1];
+    return nxt ? nxt.dataset.fk : null;
+  };
+
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-act]');
+    if (!t || t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA') return;
+    const act = t.dataset.act;
+    if (act === 'toggle') { const k = t.dataset.key; ui.expanded.has(k) ? ui.expanded.delete(k) : ui.expanded.add(k); renderGrid(); return; }
+    if (act === 'open') { ui.selected = t.dataset.key; renderAll(); $('#detail').scrollIntoView({ block: 'nearest' }); return; }
+    if (act === 'close') { ui.selected = null; renderAll(); return; }
+    if (act === 'allocate') { const a = plan.rollup().find((x) => x.id === t.dataset.acct); plan.allocateTarget(a.id, a.target); commit(); return; }
+    if (act === 'decision') { plan.setDecision(parse(t.dataset.key).id, t.dataset.d); commit(); return; }
+    if (act === 'remove') { const po = parse(t.dataset.key); ui.selected = null; plan.remove(po.id); commit(); return; }
+  });
+
+  document.addEventListener('change', (e) => {
+    const t = e.target;
+    const act = t.dataset && t.dataset.act;
+    if (!act) return;
+    const nf = nextFocus(t);
+    if (act === 'annual') { plan.setAnnual(parse(t.dataset.key).id, t.value); }
+    else if (act === 'uplift') { plan.setUplift(parse(t.dataset.key).id, (Number(t.value) || 0) / 100); }
+    else if (act === 'target') { plan.setTarget(t.dataset.acct, t.value); }
+    else if (act === 'month') { plan.setMonth(parse(t.dataset.key).id, Number(t.dataset.m), t.value); }
+    else if (act === 'method') { plan.setMethod(parse(t.dataset.key).id, t.value, t.value === 'stop' ? { stopAfter: '2027-06' } : {}); }
+    else if (act === 'stopafter') { plan.setMethod(parse(t.dataset.key).id, 'stop', { stopAfter: t.value }); }
+    else if (act === 'newmonthly') { const po = parse(t.dataset.key); plan.setMethod(po.id, 'new', { monthly: Number(t.value) || 0 }); }
+    else if (act === 'note') { plan.setNote(parse(t.dataset.key).id, t.value); persist(); return; }
+    ui.focusKey = nf;
+    commit();
+  });
+
+  $('#q').addEventListener('input', (e) => { ui.q = e.target.value; renderAll(); });
+  $('#fCc').addEventListener('change', (e) => { ui.cc = e.target.value; renderAll(); });
+  $('#fStatus').addEventListener('change', (e) => { ui.status = e.target.value; renderAll(); });
+  $('#btnExpand').addEventListener('click', () => {
+    for (const a of plan.rollup(filterFn())) { ui.expanded.add(a.id); for (const v of a.vendors) ui.expanded.add(`${a.id}|${v.vendor}`); }
+    renderGrid();
+  });
+  $('#btnCollapse').addEventListener('click', () => { ui.expanded.clear(); renderGrid(); });
+  $('#btnUndo').addEventListener('click', () => { plan.undo(); commit(); });
+  $('#btnReset').addEventListener('click', () => {
+    const b = $('#btnReset');
+    if (b.dataset.armed === '1') { plan.reset(); ui.selected = null; b.textContent = 'Reset'; b.dataset.armed = ''; commit(); return; }
+    b.dataset.armed = '1'; b.textContent = 'Click again to reset';
+    setTimeout(() => { b.dataset.armed = ''; b.textContent = 'Reset'; }, 3500);
+  });
+  $('#btnBulk').addEventListener('click', () => {
+    const ids = plan.state.pos.filter(filterFn()).map((p) => p.id);
+    const pct = (Number($('#bulkPct').value) || 0) / 100;
+    const label = ui.q || ui.cc !== 'all' || ui.status !== 'all' ? 'the filtered view' : 'all POs';
+    // POs share ids across accounts only for payroll; resolve by object instead
+    const targets = plan.state.pos.filter(filterFn()).filter((p) => ['runrate', 'flat', 'stop'].includes(p.plan.method));
+    if (!targets.length) return;
+    plan.applyUplift(targets.map((p) => p.id), pct, label);
+    commit();
+  });
+  $('#btnExport').addEventListener('click', () => {
+    const rows = plan.exportRows();
+    const cols = Object.keys(rows[0]);
+    const cell = (v) => { const s = String(v ?? ''); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+    const csv = [cols.join(','), ...rows.map((r) => cols.map((c) => cell(r[c])).join(','))].join('\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+    const a = document.createElement('a'); a.href = url; a.download = 'it-plan-fy2027-by-po.csv'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  });
+  $('#btnLog').addEventListener('click', () => {
+    $('#logBody').innerHTML = plan.log.length ? plan.log.map((l) => `<div class="logrow"><span class="muted">${esc(new Date(l.at).toLocaleTimeString('en-GB'))}</span><b>${esc(l.what)}</b><span>${esc(l.detail)}</span></div>`).join('') : '<p class="muted">No changes yet this session.</p>';
+    $('#dlgLog').showModal();
+  });
+  $('#logClose').addEventListener('click', () => $('#dlgLog').close());
+
+  // new PO dialog
+  $('#nAcct').innerHTML = plan.state.accounts.filter((a) => !['6000', '6010'].includes(a.id)).map((a) => `<option value="${a.id}">${a.id} · ${esc(a.name)}</option>`).join('');
+  $('#nCc').innerHTML = Object.entries(plan.state.costCentres).map(([k, v]) => `<option value="${k}">${k} · ${esc(v)}</option>`).join('');
+  $('#nStart').innerHTML = P.PLAN_MONTHS.map((x, i) => `<option value="${x}">${P.PLAN_MONTH_LABELS[i]} 2027</option>`).join('');
+  $('#btnNew').addEventListener('click', () => { $('#nErr').textContent = ''; $('#dlgNew').showModal(); });
+  $('#nGo').addEventListener('click', (e) => {
+    e.preventDefault();
+    const vendor = $('#nVendor').value.trim(), description = $('#nDesc').value.trim();
+    const monthly = Number($('#nMonthly').value), months = Number($('#nMonths').value);
+    if (!vendor || !description || !(monthly >= 0) || !(months >= 1)) { $('#nErr').textContent = 'Add a vendor, a description, a monthly amount and a number of months.'; return; }
+    const startIx = P.PLAN_MONTHS.indexOf($('#nStart').value);
+    const id = plan.addNew({ vendor, description, account: $('#nAcct').value, costCentre: $('#nCc').value, monthly, start: $('#nStart').value, months: Math.min(months, 12 - startIx) });
+    ui.expanded.add($('#nAcct').value); ui.expanded.add(`${$('#nAcct').value}|${vendor}`);
+    ui.selected = id + '|' + $('#nAcct').value;
+    $('#dlgNew').close(); $('#formNew').reset(); commit();
+  });
+
+  // header + filters
+  $('#planYear').textContent = (DATA.meta.planYear || 'FY2027').replace('FY', 'FY ').replace('FY ', 'FY');
+  $('#subtitle').textContent = `${DATA.meta.company} · actuals to ${DATA.meta.actualsThrough}, forecast to Dec · changes are saved in this browser only`;
+  $('#fCc').innerHTML = '<option value="all">All cost centres</option>' + Object.entries(plan.state.costCentres).map(([k, v]) => `<option value="${k}">${k} · ${esc(v)}</option>`).join('');
+  renderAll();
+})();
+</script>
+
+</body>
+</html>
